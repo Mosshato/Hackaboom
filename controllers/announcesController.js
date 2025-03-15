@@ -19,6 +19,7 @@ initDB().catch(console.error);
 
 /*
 * {
+    "name": "nume",
     "email": "user@example.com",
     "description": "Vând bicicletă de munte, stare excelentă!",
     "price": 1500,
@@ -31,18 +32,22 @@ initDB().catch(console.error);
 */
 router.post('/create', async (req, res) => {
     try {
-        const { email, description, photos, price, location } = req.body;
+        const { name, email, description, photos, price, location } = req.body;
 
-        if (!email || !description || !price) {
-            return res.status(400).json({ message: 'Email, description, and price are required.' });
+        // 🔴 Validare email, descriere, preț și locație (coordonate)
+        if (!name || !email || !description || !price || !location || !location.lat || !location.lng) {
+            return res.status(400).json({
+                message: 'Email, description, price și location (cu lat și lng) sunt obligatorii.'
+            });
         }
 
-        // ✅ Verificăm dacă există deja un anunț identic (după email + description + price + location)
+        // ✅ Verificăm dacă există deja un anunț identic
         const existingAnnouncement = await db.collection('announcements').findOne({
+            name: name,
             userEmail: email,
             description: description,
-            price: parseFloat(price),
-            location: location || ''
+            price: price,
+            "location.city": location.city || ''
         });
 
         if (existingAnnouncement) {
@@ -51,7 +56,7 @@ router.post('/create', async (req, res) => {
             });
         }
 
-        // ✅ Dacă nu există, creăm anunțul (Mongo va genera automat _id)
+        // ✅ Prelucrăm pozele, dacă există
         const processedPhotos = photos && photos.length > 0
             ? photos.map(base64 => ({
                 data: base64,
@@ -59,21 +64,27 @@ router.post('/create', async (req, res) => {
             }))
             : [];
 
+        // ✅ Construim obiectul de anunț cu locație exactă
         const announcement = {
+            name: name,
             userEmail: email,
             description,
-            price: price,
-            location: location || '',
+            price: parseFloat(price),
+            location: {
+                city: location.city || '',
+                lat: parseFloat(location.lat),
+                lng: parseFloat(location.lng)
+            },
             photos: processedPhotos,
             createdAt: new Date()
         };
-
+        console.log(announcement);
         const result = await db.collection('announcements').insertOne(announcement);
 
         if (result.acknowledged && result.insertedId) {
             res.status(201).json({
                 message: 'Announcement created successfully!',
-                announcementId: result.insertedId  // MongoDB _id generat automat
+                announcementId: result.insertedId
             });
         } else {
             res.status(500).json({
@@ -193,6 +204,32 @@ router.get('/feed', async (req, res) => {
     }
 });
 
+router.get('/map', async (req, res) => {
+    try {
+        // Selectezi doar anunțurile cu locație (lat/lng)
+        const announcements = await db.collection('announcements').find({
+            "location.lat": { $exists: true },
+            "location.lng": { $exists: true }
+        }).project({
+            description: 1,
+            price: 1,
+            location: 1,
+            photos: 1,
+            createdAt: 1
+        }).toArray();
+
+        res.status(200).json({
+            message: 'Lista anunțurilor pentru hartă',
+            announcements: announcements
+        });
+
+    } catch (error) {
+        console.error('❌ Eroare la preluarea anunțurilor pentru hartă:', error);
+        res.status(500).json({
+            message: 'Eroare internă pe server'
+        });
+    }
+});
 
 
 

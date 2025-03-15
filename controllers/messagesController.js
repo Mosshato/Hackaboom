@@ -53,7 +53,6 @@ router.post('/send', async (req, res) => {
     }
 });
 
-
 // GET /messages/conversation
 router.get('/conversation', async (req, res) => {
     try {
