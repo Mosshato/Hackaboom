@@ -30,6 +30,10 @@ app.get('/main', (req, res) => {
     res.sendFile(path.join(__dirname, 'Frontend', 'main.html'));
 });
 
+app.get('/map', (req, res) => {
+    res.sendFile(path.join(__dirname, 'Frontend', 'map.html'));
+});
+
 
 global.loggedInUsers = {}; // a this resets if server restarts (no persistence)
 

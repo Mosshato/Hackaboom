@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autentificare</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+            font-family: Arial, sans-serif;
+        }
+
+        .login-container {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            width: 350px;
+            text-align: center;
+        }
+
+        h2 {
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .input-group {
+            margin-bottom: 1rem;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #555;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-bottom: 1rem;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+        .secondary-btn {
+            background-color: #28a745;
+        }
+
+        .secondary-btn:hover {
+            background-color: #218838;
+        }
+
+        .error-message {
+            color: red;
+            margin-top: 1rem;
+        }
+
+        .success-message {
+            color: green;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="login-container">
+    <h2>Autentificare</h2>
+
+    <form id="loginForm">
+        <div class="input-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+        <div class="input-group">
+            <label for="password">Parolă:</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+        <button type="submit" class="btn">Autentificare</button>
+    </form>
+
+    <div id="responseMessage" class="error-message"></div>
+
+    <!-- Butonul de redirect -->
+    <button onclick="window.location.href='signup.html'" class="btn secondary-btn">Nu ai cont? Creează unul!</button>
+</div>
+
+<script>
+    const loginForm = document.getElementById('loginForm');
+    const responseMessage = document.getElementById('responseMessage');
+
+    loginForm.addEventListener('submit', async (e) => {
+        e.preventDefault(); // Nu trimite formularul în mod tradițional
+
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+
+        try {
+            const response = await fetch('http://localhost:5000/user/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email, password })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                responseMessage.textContent = '✅ Login reușit! Bine ai venit, ' + data.email;
+                responseMessage.classList.remove('error-message');
+                responseMessage.classList.add('success-message');
+
+                // Salvăm în localStorage
+                localStorage.setItem('email', email);
+
+                // Redirect
+                window.location.href = "/main.html";
+
+            } else {
+                responseMessage.textContent = '❌ ' + data.message;
+                responseMessage.classList.remove('success-message');
+                responseMessage.classList.add('error-message');
+            }
+
+        } catch (error) {
+            console.error('❌ Eroare de rețea:', error);
+            responseMessage.textContent = '❌ Eroare de rețea sau server indisponibil!';
+            responseMessage.classList.add('error-message');
+        }
+    });
+</script>
+
+</body>
+</html>

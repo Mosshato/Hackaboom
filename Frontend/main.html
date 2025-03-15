@@ -1,182 +1,187 @@
 <!DOCTYPE html>
-<html lang="ro">
+<html lang="en">
 <head>
-    <script>
-        // ✅ Verifică dacă userul e logat (existența în localStorage)
-    const email = localStorage.getItem('email');
-
-    if (!email) {
-        // ❌ Dacă nu există, redirect către login page
-        window.location.href = 'index.html'; // sau 'login.html' dacă e pagina ta de login
-    }
-
-    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Time Bank - Pagina Principală</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <title>Main</title>
     <style>
-        /* Stiluri pentru pagină */
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap');
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
-        }
-
         body {
-            background: #f4f4f4;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px;
+            background-color: #f8f9fa;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
         }
-
-        .header {
-            width: 100%;
-            background-color: white;
-            padding: 10px 0;
+        .navbar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
+            padding: 10px 20px;
+            background-color: #252424;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
         }
 
-        .header .btn {
-            background-color: #007BFF;
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
             color: white;
-            padding: 10px 20px;
+        }
+
+        .searchbar input {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 500px;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .buttons button {
+            display: flex;
+            align-items: center;
+            gap: 5px;  /* Spațiu între iconiță și text */
+            padding: 8px 12px;
             border: none;
-            border-radius: 8px;
+            background-color: #605c5c;
+            color: white;
+            font-size: 16px;
+            border-radius: 5px;
             cursor: pointer;
             transition: background 0.3s;
         }
 
-        .header .btn:hover {
-            background-color: #0056b3;
+        .buttons button:hover {
+            background-color: black;
         }
 
-        .search-bar {
-            width: 100%;
-            max-width: 600px;
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: space-between;
+        .material-icons {
+            font-size: 20px;  /* Ajustează dimensiunea iconiței */
+        }
+        .container {
+            width: 90%;
+            margin: 20px auto;
         }
 
-        .search-bar input {
-            width: 80%;
-            padding: 10px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            font-size: 16px;
-        }
-
-        .search-bar button {
-            width: 15%;
-            padding: 10px;
-            border: none;
-            background-color: #007BFF;
-            color: white;
-            font-size: 16px;
-            border-radius: 8px;
-            cursor: pointer;
-        }
-
-        .categories {
-            display: flex;
-            justify-content: space-around;
-            width: 100%;
-            max-width: 900px;
+        h2 {
+            text-align: center;
             margin-bottom: 20px;
         }
 
-        .category {
-            background-color: #fff;
+        .announcements-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .announcement-card {
+            background: white;
             padding: 15px;
             border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             text-align: center;
-            width: 18%;
-            cursor: pointer;
-            transition: background 0.3s;
+            transition: transform 0.3s ease-in-out;
         }
 
-        .category:hover {
-            background-color: #f1f1f1;
+        .announcement-card:hover {
+            transform: scale(1.05);
         }
 
-        .hours-section {
+        .announcement-card img {
             width: 100%;
-            max-width: 900px;
-            padding: 20px;
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
-            text-align: center;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 5px;
         }
 
-        .task-button {
-            background-color: #28a745;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background 0.3s;
-            margin-top: 20px;
+        .announcement-card h3 {
+            font-size: 18px;
+            margin: 10px 0;
+            color: #333;
         }
 
-        .task-button:hover {
-            background-color: #218838;
+        .announcement-card p {
+            font-size: 14px;
+            color: #555;
         }
 
-        .category-title {
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
 
     </style>
 </head>
 <body>
-<div class="header">
-    <button class="btn">Logout</button>
-    <a href="postare-anunt.html"><button class="btn">Postează anunț</button></a>
-</div>
+<div class="navbar">
+    <div class="logo">JustInTime</div>
 
-<div class="search-bar">
-    <input type="text" placeholder="Căutare taskuri...">
-    <button>Căutare</button>
-</div>
+    <div class="searchbar">
+        <input type="text" placeholder="Căutare...">
+    </div>
 
-<div class="categories">
-    <div class="category">
-        <div class="category-title">Categorie 1</div>
-        <p>Descriere</p>
-    </div>
-    <div class="category">
-        <div class="category-title">Categorie 2</div>
-        <p>Descriere</p>
-    </div>
-    <div class="category">
-        <div class="category-title">Categorie 3</div>
-        <p>Descriere</p>
-    </div>
-    <div class="category">
-        <div class="category-title">Categorie 4</div>
-        <p>Descriere</p>
+    <div class="buttons">
+        <button><i class="material-icons">favorite</i> Favorite</button>
+        <button><i class="material-icons">chat_bubble</i> Mesaje</button>
+        <button><i class="material-icons">pin_drop</i> Harta</button>
+        <button><i class="material-icons">library_add</i> Adaugă Anunț</button>
+        <button><i class="material-icons">person</i> Cont</button>
     </div>
 </div>
-
-<div class="hours-section">
-    <h3>Ore câștigate</h3>
-    <p>Ai câștigat 50 ore!</p>
+<div class="container">
+    <h2>Anunțuri</h2>
+    <div id="announcements" class="announcements-grid"></div>
 </div>
 
-<button class="task-button">Postează un task</button>
+
+<!-- Include Font Awesome for icons -->
+<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", async () => {
+        const announcementsContainer = document.getElementById("announcements");
+
+        async function fetchAnnouncements() {
+            try {
+                const response = await fetch("http://localhost:5000/announces/feed");
+                const data = await response.json(); // { message: ..., announcements: [...] }
+
+                const announcements = data.announcements;
+
+                if (!announcements || announcements.length === 0) {
+                    announcementsContainer.innerHTML = "<p>Nu există anunțuri disponibile!</p>";
+                    return;
+                }
+
+                // Curățăm containerul înainte de afișare
+                announcementsContainer.innerHTML = "";
+
+                announcements.forEach(ad => {
+                    const card = document.createElement("div");
+                    card.classList.add("announcement-card");
+
+                    // Alegem prima imagine (dacă există), altfel fallback
+                    const image = ad.photos && ad.photos.length > 0
+                        ? ad.photos[0].data
+                        : "https://via.placeholder.com/300x180?text=Fără+Poză";
+
+                    // Populăm card-ul cu datele anunțului
+                    card.innerHTML = `
+                    <img src="${image}" alt="${ad.name}">
+                    <h3>${ad.name}</h3>
+                    <p>${ad.description}</p>
+                    <p><strong>Preț:</strong> ${ad.price} lei</p>
+                    <p><strong>Oraș:</strong> ${ad.location.city}</p>
+                `;
+
+                    announcementsContainer.appendChild(card);
+                });
+
+            } catch (error) {
+                console.error("❌ Eroare la preluarea anunțurilor:", error);
+                announcementsContainer.innerHTML = "<p>Eroare la încărcarea anunțurilor.</p>";
+            }
+        }
+
+        fetchAnnouncements();
+    });
+</script>
+
 </body>
-
 </html>
