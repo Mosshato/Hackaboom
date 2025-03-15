@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <script>
+        // ✅ Verifică dacă userul e logat (existența în localStorage)
+    const email = localStorage.getItem('email');
+
+    if (!email) {
+        // ❌ Dacă nu există, redirect către login page
+        window.location.href = 'index.html'; // sau 'login.html' dacă e pagina ta de login
+    }
+
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time Bank - Pagina Principală</title>
+    <style>
+        /* Stiluri pentru pagină */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .header {
+            width: 100%;
+            background-color: white;
+            padding: 10px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .header .btn {
+            background-color: #007BFF;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .header .btn:hover {
+            background-color: #0056b3;
+        }
+
+        .search-bar {
+            width: 100%;
+            max-width: 600px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .search-bar input {
+            width: 80%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .search-bar button {
+            width: 15%;
+            padding: 10px;
+            border: none;
+            background-color: #007BFF;
+            color: white;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .categories {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            max-width: 900px;
+            margin-bottom: 20px;
+        }
+
+        .category {
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 18%;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .category:hover {
+            background-color: #f1f1f1;
+        }
+
+        .hours-section {
+            width: 100%;
+            max-width: 900px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .task-button {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 20px;
+        }
+
+        .task-button:hover {
+            background-color: #218838;
+        }
+
+        .category-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+    </style>
+</head>
+<body>
+<div class="header">
+    <button class="btn">Logout</button>
+    <a href="postare-anunt.html"><button class="btn">Postează anunț</button></a>
+</div>
+
+<div class="search-bar">
+    <input type="text" placeholder="Căutare taskuri...">
+    <button>Căutare</button>
+</div>
+
+<div class="categories">
+    <div class="category">
+        <div class="category-title">Categorie 1</div>
+        <p>Descriere</p>
+    </div>
+    <div class="category">
+        <div class="category-title">Categorie 2</div>
+        <p>Descriere</p>
+    </div>
+    <div class="category">
+        <div class="category-title">Categorie 3</div>
+        <p>Descriere</p>
+    </div>
+    <div class="category">
+        <div class="category-title">Categorie 4</div>
+        <p>Descriere</p>
+    </div>
+</div>
+
+<div class="hours-section">
+    <h3>Ore câștigate</h3>
+    <p>Ai câștigat 50 ore!</p>
+</div>
+
+<button class="task-button">Postează un task</button>
+</body>
+
+</html>

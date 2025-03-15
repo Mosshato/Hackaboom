@@ -1,6 +1,7 @@
 const express = require('express');
 const http = require('http');              // 👈 Avem nevoie de server HTTP pentru Socket.io
 const { Server } = require('socket.io');   // 👈 Socket.io server
+const path = require('path'); // ✅ Adăugat aici!
 
 const app = express();
 const userRoutes = require('./controllers/userController');
@@ -10,6 +11,26 @@ const connectDB = require('./config/db');
 
 // Middleware
 app.use(express.json());
+app.use(express.static(path.join(__dirname, 'Frontend')));
+
+// LOGIN PAGE
+app.get('/index', (req, res) => {
+    res.sendFile(path.join(__dirname, 'Frontend', 'index.html'));
+});
+
+app.get('/signup', (req, res) => {
+    res.sendFile(path.join(__dirname, 'Frontend', 'signup.html'));
+});
+
+app.get('/login', (req, res) => {
+    res.sendFile(path.join(__dirname, 'Frontend', 'login.html'));
+});
+
+app.get('/main', (req, res) => {
+    res.sendFile(path.join(__dirname, 'Frontend', 'main.html'));
+});
+
+
 global.loggedInUsers = {}; // a this resets if server restarts (no persistence)
 
 // Creezi serverul HTTP pe care rulezi Express + Socket.io

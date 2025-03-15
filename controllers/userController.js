@@ -50,10 +50,10 @@ router.post('/login', async (req, res) => {
 });
 router.post('/signup', async (req, res) => {
     try {
-        const { email, password } = req.body;
+        const { username, email, password } = req.body;
 
-        if (!email || !password) {
-            return res.status(400).json({ message: 'Email and password are required.' });
+        if (!email || !password || !username) {
+            return res.status(400).json({ message: 'Email usernmae and password are required.' });
         }
 
         const existingUser = await db.collection('users').findOne({ email });
@@ -65,6 +65,7 @@ router.post('/signup', async (req, res) => {
 
         const result = await db.collection('users').insertOne({
             email,
+            username: username,
             password: hashedPassword,
             createdAt: new Date()
         });
