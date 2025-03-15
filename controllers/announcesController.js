@@ -144,7 +144,7 @@ router.delete('/delete', async (req, res) => {
 */
 router.get('/user', async (req, res) => {
     try {
-        const { email } = req.body;  // De obicei, la GET folosim query params: req.query.email
+        const { email } = req.query;  // De obicei, la GET folosim query params: req.query.email
 
         // Verificăm dacă email-ul a fost trimis
         if (!email) {
