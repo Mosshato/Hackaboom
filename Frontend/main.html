@@ -118,10 +118,10 @@
     </div>
 
     <div class="buttons">
-        <button><i class="material-icons">favorite</i> Favorite</button>
-        <button><i class="material-icons">chat_bubble</i> Mesaje</button>
-        <button><i class="material-icons">pin_drop</i> Harta</button>
-        <button><i class="material-icons">library_add</i> Adaugă Anunț</button>
+        <button id="favButton"><i class="material-icons">favorite</i> Favorite</button>
+        <button id="messButton"><i class="material-icons">chat_bubble</i> Mesaje</button>
+        <button id="mapButton"><i class="material-icons">pin_drop</i> Harta</button>
+        <button id="addButton"><i class="material-icons">library_add</i> Adaugă Anunț</button>
         <button id="contButton"><i class="material-icons">person</i> Cont</button>
     </div>
 </div>
@@ -129,6 +129,7 @@
     <h2>Anunțuri</h2>
     <div id="announcements" class="announcements-grid"></div>
 </div>
+<script src="notifications.js"></script>
 
 
 <!-- Include Font Awesome for icons -->
@@ -193,13 +194,8 @@
     });
 </script>
 <script>
-    document.getElementById("contButton").addEventListener("click", function() {
-        window.location.href = "myAccount.html";
-    });
-</script>
-<script>
-    document.getElementById("myAnnounce").addEventListener("click", function() {
-        window.location.href = "myAccount.html";
+    document.getElementById("favButton").addEventListener("click", function() {
+        window.location.href = "favorite.html";
     });
 </script>
 <script>
@@ -208,13 +204,18 @@
     });
 </script>
 <script>
-    document.getElementById("contButton").addEventListener("click", function() {
-        window.location.href = "myAccount.html";
+    document.getElementById("messButton").addEventListener("click", function() {
+        window.location.href = "conversations.html";
     });
 </script>
 <script>
-    document.getElementById("contButton").addEventListener("click", function() {
-        window.location.href = "myAccount.html";
+    document.getElementById("addButton").addEventListener("click", function() {
+        window.location.href = "addAnnounce.html";
+    });
+</script>
+<script>
+    document.getElementById("mapButton").addEventListener("click", function() {
+        window.location.href = "map.html";
     });
 </script>
 

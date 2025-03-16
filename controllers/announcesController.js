@@ -348,6 +348,108 @@ router.post('/addFavorite', async (req, res) => {
     }
 });
 
+// Importă sau definește RequestsCollection (presupun că e MongoDB)
+
+router.post('/makedeal', async (req, res) => {
+    const { from, to, announcementId } = req.body;
+
+    console.log('Primit:', { from, to, announcementId });
+
+    // ✅ VALIDĂRI SIMPLE
+    if (!from || !to || !announcementId) {
+        return res.status(400).json({ message: 'Date lipsă!' });
+    }
+
+    try {
+        // ✅ VERIFICĂM DACĂ EXISTĂ USERUL DESTINATAR ("to")
+        const userTo = await db.collection('users').findOne({ email: to });
+
+        if (!userTo) {
+            console.warn(`Destinatarul cu emailul ${to} nu există!`);
+            return res.status(404).json({ message: `Utilizatorul destinatar (${to}) nu a fost găsit!` });
+        }
+
+        // ✅ STRUCTURA DATELOR SALVATE
+        const newDealRequest = {
+            from,                // cine trimite cererea
+            to,                  // destinatarul cererii
+            announcementId,      // ID-ul anunțului la care se referă
+            status: 'pending',   // status inițial
+            createdAt: new Date() // când a fost creată
+        };
+
+        // ✅ INSERAREA ÎN MONGO
+        const insertResult = await db.collection('dealsSealed').insertOne(newDealRequest);
+
+        console.log('Cerere salvată cu succes:', insertResult.insertedId);
+
+        // ✅ RĂSPUNS SUCCES
+        res.json({ message: 'Cererea a fost trimisă cu succes!', requestId: insertResult.insertedId });
+
+        // ✅ AICI poți trimite prin WebSockets către utilizatorul "to"
+        // io.to(to).emit('new_request', newDealRequest);
+
+    } catch (error) {
+        console.error('Eroare la salvarea cererii:', error);
+        res.status(500).json({ message: 'Eroare internă server!' });
+    }
+});
+
+router.get('/checkdeals', async (req, res) => {
+    const userEmail = req.query.email;
+
+    if (!userEmail) {
+        return res.status(400).json({ message: 'Email lipsă!' });
+    }
+
+    try {
+        const pendingDeals = await db.collection('dealsSealed').find({
+            to: userEmail,
+            status: 'pending'
+        }).toArray();
+
+        res.json({ pendingDeals });
+
+    } catch (error) {
+        console.error('Eroare la verificarea deal-urilor:', error);
+        res.status(500).json({ message: 'Eroare server!' });
+    }
+});
+
+
+router.patch('/dealresponse', async (req, res) => {
+    const { dealId, newStatus } = req.body;
+
+    if (!dealId || !newStatus) {
+        return res.status(400).json({ message: 'Date lipsă!' });
+    }
+
+    if (!['confirmed', 'refused'].includes(newStatus)) {
+        return res.status(400).json({ message: 'Status invalid!' });
+    }
+
+    try {
+        const result = await db.collection('dealsSealed').updateOne(
+            { _id: new ObjectId(dealId) },
+            { $set: { status: newStatus, updatedAt: new Date() } }
+        );
+
+        if (result.modifiedCount === 0) {
+            return res.status(404).json({ message: 'Deal-ul nu a fost găsit sau statusul este deja actualizat.' });
+        }
+
+        res.json({ message: 'Status actualizat cu succes!' });
+
+    } catch (error) {
+        console.error('Eroare la update deal:', error);
+        res.status(500).json({ message: 'Eroare internă server!' });
+    }
+});
+
+
+
+module.exports = router;
+
 
 
 

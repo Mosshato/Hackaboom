@@ -6,240 +6,46 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <title>Contul Meu</title>
   <style>
-    body {
-      background-color: #f8f9fa;
-      font-family: 'Arial', sans-serif;
-      margin: 0;
-    }
-
-    .navbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px 20px;
-      background-color: #252424;
-      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-      position: fixed;
-      width: 100%;
-      top: 0;
-      left: 0;
-      z-index: 1000;
-    }
-
-    .logo {
-      font-size: 24px;
-      font-weight: bold;
-      color: white;
-    }
-
-    .searchbar input {
-      padding: 8px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      width: 500px;
-    }
-
-    .buttons {
-      display: flex;
-      gap: 10px;
-    }
-
-    .buttons button {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      padding: 8px 12px;
-      border: none;
-      background-color: #605c5c;
-      color: white;
-      font-size: 16px;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-
-    .buttons button:hover {
-      background-color: black;
-    }
-
-    .container {
-      width: 90%;
-      margin: 120px auto 20px;
-    }
-
-    h2 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-
-    /* ✅ Profilul user-ului într-un chenar alb */
-    .profile-card {
-      background-color: #fff;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      margin-bottom: 40px;
-      text-align: center;
-      max-width: 600px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    .profile-card p {
-      font-size: 18px;
-      margin: 10px 0;
-      color: #333;
-    }
-
-    /* ✅ Grilă pătrată pentru anunțuri */
-    .announcements-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-      gap: 20px;
-      justify-items: center;
-    }
-
-    .announcement-card {
-      background: white;
-      width: 100%;
-      max-width: 250px; /* fixăm lățimea */
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      text-align: center;
-      transition: transform 0.3s ease-in-out;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      height: 400px; /* pătrat-ish */
-    }
-
-    .announcement-card:hover {
-      transform: scale(1.05);
-    }
-
-    .announcement-card img {
-      width: 100%;
-      height: 180px;
-      object-fit: cover;
-      border-radius: 10px 10px 0 0;
-    }
-
-    .announcement-card h3 {
-      font-size: 18px;
-      margin: 10px 0;
-      color: #333;
-    }
-
-    .announcement-card p {
-      font-size: 14px;
-      color: #555;
-      margin: 5px 0;
-    }
-
-    .delete-btn {
-      margin: 10px;
-      padding: 8px 12px;
-      background-color: #d9534f;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-
-    .delete-btn:hover {
-      background-color: #c9302c;
-    }
-    .choose-btn {
-      margin: 10px;
-      padding: 8px 12px;
-      background-color: #5dd94f;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-    .choose-btn:hover {
-      background-color: #23aa19;
-    }
-    .round-button {
-      position: fixed;
-      bottom: 20px;
-      left: 20px;
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      background-color: #605c5c;
-      color: white;
-      border: none;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
-      cursor: pointer;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-      transition: background-color 0.3s;
-      z-index: 1000;
-    }
-
-    .round-button:hover {
-      background-color: black;
-    }
-    /* Modal Styling */
-    .modal {
-      display: none; /* Hidden by default */
-      position: fixed;
-      z-index: 1000;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
-      justify-content: center;
-      align-items: center;
-    }
-
-    .modal-content {
-      background-color: #fff;
-      padding: 20px;
-      border-radius: 10px;
-      width: 400px;
-      text-align: center;
-    }
-
-    .modal input {
-      width: 100%;
-      padding: 10px;
-      margin: 10px 0;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-    }
-
-    .modal button {
-      padding: 10px 20px;
-      background-color: #5dd94f;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    .modal button:hover {
-      background-color: #23aa19;
-    }
-
+    /* STYLE CSS - Neschimbat (este deja OK) */
+    body { background-color: #f8f9fa; font-family: 'Arial', sans-serif; margin: 0; }
+    .navbar { display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; background-color: #252424; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); position: fixed; width: 100%; top: 0; left: 0; z-index: 1000; }
+    .logo { font-size: 24px; font-weight: bold; color: white; }
+    .searchbar input { padding: 8px; border: 1px solid #ccc; border-radius: 5px; width: 500px; }
+    .buttons { display: flex; gap: 10px; }
+    .buttons button { display: flex; align-items: center; gap: 5px; padding: 8px 12px; border: none; background-color: #605c5c; color: white; font-size: 16px; border-radius: 5px; cursor: pointer; transition: background 0.3s; }
+    .buttons button:hover { background-color: black; }
+    .container { width: 90%; margin: 120px auto 20px; }
+    h2 { text-align: center; margin-bottom: 20px; }
+    .profile-card { background-color: #fff; padding: 30px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); margin-bottom: 40px; text-align: center; max-width: 600px; margin-left: auto; margin-right: auto; }
+    .profile-card p { font-size: 18px; margin: 10px 0; color: #333; }
+    .announcements-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; justify-items: center; }
+    .announcement-card { background: white; width: 100%; max-width: 250px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); text-align: center; transition: transform 0.3s ease-in-out; display: flex; flex-direction: column; justify-content: space-between; height: 400px; }
+    .announcement-card:hover { transform: scale(1.05); }
+    .announcement-card img { width: 100%; height: 180px; object-fit: cover; border-radius: 10px 10px 0 0; }
+    .announcement-card h3 { font-size: 18px; margin: 10px 0; color: #333; }
+    .announcement-card p { font-size: 14px; color: #555; margin: 5px 0; }
+    .delete-btn { margin: 10px; padding: 8px 12px; background-color: #d9534f; color: white; border: none; border-radius: 5px; cursor: pointer; transition: background 0.3s; }
+    .delete-btn:hover { background-color: #c9302c; }
+    .choose-btn { margin: 10px; padding: 8px 12px; background-color: #5dd94f; color: white; border: none; border-radius: 5px; cursor: pointer; transition: background 0.3s; }
+    .choose-btn:hover { background-color: #23aa19; }
+    .round-button { position: fixed; bottom: 20px; left: 20px; width: 50px; height: 50px; border-radius: 50%; background-color: #605c5c; color: white; border: none; display: flex; align-items: center; justify-content: center; font-size: 18px; cursor: pointer; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); transition: background-color 0.3s; z-index: 1000; }
+    .round-button:hover { background-color: black; }
+    .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); justify-content: center; align-items: center; }
+    .modal-content { background-color: #fff; padding: 20px; border-radius: 10px; width: 400px; text-align: center; }
+    #dealModal .modal-content { padding: 25px 20px; box-shadow: 0px 5px 15px rgba(0,0,0,0.2); }
+    .confirm-deal-btn, .close-deal-btn { padding: 10px 15px; color: white; border: none; border-radius: 5px; cursor: pointer; flex: 1; transition: background-color 0.3s; }
+    .confirm-deal-btn { background-color: #5dd94f; }
+    .confirm-deal-btn:hover { background-color: #23aa19; }
+    .close-deal-btn { background-color: #d9534f; }
+    .close-deal-btn:hover { background-color: #c9302c; }
   </style>
 </head>
 <body>
 
+<!-- ✅ NAVBAR -->
 <div class="navbar">
   <div class="logo">JustInTime</div>
-
-  <div class="searchbar">
-    <input type="text" placeholder="Căutare...">
-  </div>
-
+  <div class="searchbar"><input type="text" placeholder="Căutare..."></div>
   <div class="buttons">
     <button id="favButton"><i class="material-icons">favorite</i> Favorite</button>
     <button id="messButton"><i class="material-icons">chat_bubble</i> Mesaje</button>
@@ -252,7 +58,6 @@
 <div class="container">
   <h2>Contul Meu</h2>
 
-  <!-- ✅ Card alb pentru profil -->
   <div class="profile-card">
     <p id="name">Numele Utilizatorului</p>
     <p id="email">Email: utilizator@example.com</p>
@@ -262,7 +67,6 @@
 
   <h2>Anunțurile Mele</h2>
 
-  <!-- ✅ Grilă de anunțuri -->
   <div id="announcements" class="announcements-grid"></div>
 </div>
 
@@ -270,207 +74,167 @@
   <i class="material-icons">arrow_back_ios</i>
 </button>
 
-<!-- Modal pentru introducerea email-ului -->
-<div id="chooseModal" class="modal">
+<!-- ✅ DEAL MODAL -->
+<div id="dealModal" class="modal">
   <div class="modal-content">
-    <h3>Pentru a rezerva acest serviciu, introdu mailul:</h3>
-    <input type="email" id="userEmail" placeholder="Introduceti email-ul" required />
-    <button id="submitEmailButton">Trimite</button>
-    <button id="closeModalButton">Închide</button>
+    <h3>Cu cine vrei să închei acest serviciu?</h3>
+    <input type="email" id="partnerEmail" placeholder="Introdu email-ul utilizatorului" required />
+    <div style="display: flex; justify-content: space-between; gap: 10px; margin-top: 20px;">
+      <button class="confirm-deal-btn">Trimite Cererea</button>
+      <button class="close-deal-btn">Închide</button>
+    </div>
   </div>
 </div>
+<script src="notifications.js"></script>
 
 <script>
-  document.getElementById("backButton").addEventListener("click", function() {
-    window.location.href = "main.html";
-  });
+  // 🔵 NAVBAR BUTTONS
+  document.getElementById("backButton").addEventListener("click", () => window.location.href = "main.html");
+  document.getElementById("favButton").addEventListener("click", () => window.location.href = "favorite.html");
+  document.getElementById("messButton").addEventListener("click", () => window.location.href = "conversations.html");
+  document.getElementById("mapButton").addEventListener("click", () => window.location.href = "map.html");
+  document.getElementById("addButton").addEventListener("click", () => window.location.href = "addAnnounce.html");
+  document.getElementById("contButton").addEventListener("click", () => window.location.href = "myAccount.html");
 
-  document.getElementById("favButton").addEventListener("click", function() {
-    window.location.href = "favorite.html";
-  });
-
-  document.getElementById("messButton").addEventListener("click", function() {
-    window.location.href = "conversations.html";
-  });
-
-  document.getElementById("mapButton").addEventListener("click", function() {
-    window.location.href = "map.html";
-  });
-
-  document.getElementById("addButton").addEventListener("click", function() {
-    window.location.href = "addAnnounce.html";
-  });
-
-  document.getElementById("contButton").addEventListener("click", function() {
-    window.location.href = "myAccount.html";
-  });
-
-  function openChooseModal() {
-    document.getElementById("chooseModal").style.display = "flex";
-  }
-  document.getElementById("closeModalButton").addEventListener("click", function() {
-    document.getElementById("chooseModal").style.display = "none";
-  });
-
-  // Funcția pentru trimiterea email-ului
-  document.getElementById("submitEmailButton").addEventListener("click", function() {
-    const email = document.getElementById("userEmail").value;
-    if (email) {
-      alert("Email-ul a fost trimis pentru rezervare: " + email);
-      document.getElementById("chooseModal").style.display = "none";
-    } else {
-      alert("Te rog să introduci un email valid.");
-    }
-  });
-
-  // 1️⃣ DELETE FUNCTION GOES HERE
-    async function deleteAnnouncement(announcementId, cardElement) {
-    if (!announcementId) {
-    alert("ID-ul anunțului lipsește!");
-    return;
-  }
-
-    const confirmDelete = confirm("Ești sigur că vrei să ștergi acest anunț?");
-    if (!confirmDelete) {
-    return;
-  }
-
-    try {
-    const response = await fetch('http://localhost:5000/announces/delete', {
-    method: 'DELETE',
-    headers: {
-    'Content-Type': 'application/json'
-  },
-    body: JSON.stringify({ announcementId: announcementId })
-  });
-
-    const data = await response.json();
-    console.log(data);
-
-    if (response.ok) {
-    alert(data.message || "Anunț șters cu succes!");
-    cardElement.remove();
-  } else {
-    alert(data.message || "Nu am putut șterge anunțul!");
-  }
-
-  } catch (error) {
-    console.error("❌ Eroare la ștergere:", error);
-    alert("A apărut o eroare la ștergere!");
-  }
-  }
-  async function chooseAnnouncement(announcementId) {
+  // 🔵 DELETE ANNOUNCEMENT
+  async function deleteAnnouncement(announcementId, cardElement) {
     if (!announcementId) {
       alert("ID-ul anunțului lipsește!");
       return;
     }
 
-    // Exemplu de acțiune: deschiderea unui modal pentru a rezerva anunțul
-    openChooseModal();
-    document.getElementById("chooseModal").dataset.announcementId = announcementId;
-  }
-
-  document.addEventListener("DOMContentLoaded", function() {
-    // Adăugarea evenimentului la butonul "Alege" din fiecare card
-    const chooseButtons = document.querySelectorAll('.choose-btn');
-    chooseButtons.forEach(button => {
-      button.addEventListener('click', function() {
-        const announcementId = button.getAttribute('data-id');
-        chooseAnnouncement(announcementId);
-      });
-    });
-  });
-
-    // 2️⃣ USER DATA FETCH FUNCTION (MODIFIED WITH DELETE BUTTON)
-    async function fetchUserData() {
-    const email = localStorage.getItem('email');
-    if (!email) {
-    console.error('Email-ul nu a fost găsit în localStorage!');
-    return;
-  }
+    const confirmDelete = confirm("Ești sigur că vrei să ștergi acest anunț?");
+    if (!confirmDelete) return;
 
     try {
-    const response = await fetch(`http://localhost:5000/user/myAccount?email=${encodeURIComponent(email)}`, {
-    method: 'GET',
-    headers: {
-    'Content-Type': 'application/json'
+      const response = await fetch('http://localhost:5000/announces/delete', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ announcementId })
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        alert(data.message || "Anunț șters cu succes!");
+        cardElement.remove();
+      } else {
+        alert(data.message || "Nu am putut șterge anunțul!");
+      }
+    } catch (error) {
+      console.error("❌ Eroare la ștergere:", error);
+      alert("A apărut o eroare la ștergere!");
+    }
   }
+
+  // 🔵 OPEN DEAL MODAL (FOR "ALEGE" BUTTON)
+  function openDealModal(announcementId) {
+    const modal = document.getElementById("dealModal");
+    modal.style.display = "flex";
+    modal.dataset.announcementId = announcementId;
+  }
+
+  // 🔵 CLOSE DEAL MODAL BUTTONS
+  document.querySelector(".close-deal-btn").addEventListener("click", () => {
+    document.getElementById("dealModal").style.display = "none";
   });
 
-    const data = await response.json();
-    if (!response.ok) {
-    console.error('Eroare la preluarea datelor:', data.message);
-    return;
-  }
+  // 🔵 CONFIRM DEAL BUTTON ACTION
+  document.querySelector(".confirm-deal-btn").addEventListener("click", async () => {
+    const partnerEmail = document.getElementById("partnerEmail").value.trim();
+    const announcementId = document.getElementById("dealModal").dataset.announcementId;
+    const requesterEmail = localStorage.getItem("email"); // email-ul tău
 
-    document.getElementById('name').innerText = data.username;
-    document.getElementById('email').innerText = 'Email: ' + data.email;
-    document.getElementById('hours').innerText = 'Ore adunate: ' + data.oreAdunate;
-    document.getElementById('location').innerText = 'Locație: ' + data.locatie;
+    if (partnerEmail === "" || !announcementId) {
+      alert("Completează toate câmpurile corect!");
+      return;
+    }
+    try {
+      const response = await fetch("http://localhost:5000/announces/makedeal", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          from: requesterEmail,
+          to: partnerEmail,
+          announcementId: announcementId
+        })
+      });
 
-    const announcementsContainer = document.getElementById('announcements');
-    announcementsContainer.innerHTML = '';
+      const data = await response.json();
+      console.log(data)
+      if (response.ok) {
+        alert(`Cererea a fost trimisă către ${partnerEmail}`);
+        document.getElementById("dealModal").style.display = "none";
+        document.getElementById("partnerEmail").value = "";
+      } else {
+        alert(`Eroare: ${data.message}`);
+      }
 
-    if (data.announcements && data.announcements.length > 0) {
-    data.announcements.forEach(ad => {
-    const card = document.createElement("div");
-    card.classList.add("announcement-card");
+    } catch (error) {
+      console.error("Eroare la trimiterea cererii:", error);
+      alert("A apărut o problemă!");
+    }
+  });
 
-    const imageSrc = ad.photoPath
-    ? ad.photoPath
-    : "https://via.placeholder.com/300x180?text=Fără+Poză";
 
-    card.innerHTML = `
+  // 🔵 FETCH USER DATA + ADD LISTENERS ON BUTTONS
+  async function fetchUserData() {
+    const email = localStorage.getItem('email');
+    if (!email) {
+      console.error('Email-ul nu a fost găsit în localStorage!');
+      return;
+    }
+
+    try {
+      const response = await fetch(`http://localhost:5000/user/myAccount?email=${encodeURIComponent(email)}`);
+      const data = await response.json();
+
+      if (!response.ok) {
+        console.error('Eroare la preluarea datelor:', data.message);
+        return;
+      }
+
+      document.getElementById('name').innerText = data.username;
+      document.getElementById('email').innerText = 'Email: ' + data.email;
+      document.getElementById('hours').innerText = 'Ore adunate: ' + data.oreAdunate;
+      document.getElementById('location').innerText = 'Locație: ' + data.locatie;
+
+      const announcementsContainer = document.getElementById('announcements');
+      announcementsContainer.innerHTML = '';
+
+      if (data.announcements?.length > 0) {
+        data.announcements.forEach(ad => {
+          const card = document.createElement("div");
+          card.classList.add("announcement-card");
+
+          const imageSrc = ad.photoPath || "https://via.placeholder.com/300x180?text=Fără+Poză";
+          card.innerHTML = `
             <img src="${imageSrc}" alt="${ad.name}">
             <h3>${ad.name}</h3>
             <p>${ad.description}</p>
             <p><strong>Preț:</strong> ${ad.price} ore</p>
-             <div class="card-actions">
+            <div class="card-actions">
               <button class="delete-btn" data-id="${ad._id}">Șterge</button>
               <button class="choose-btn" data-id="${ad._id}">Alege</button>
-             </div>
+            </div>
           `;
 
-    const deleteButton = card.querySelector('.delete-btn');
-    deleteButton.addEventListener('click', () => {
-    deleteAnnouncement(ad._id, card);
-  });
+          card.querySelector('.delete-btn').addEventListener('click', () => deleteAnnouncement(ad._id, card));
+          card.querySelector('.choose-btn').addEventListener('click', () => openDealModal(ad._id));
 
-    announcementsContainer.appendChild(card);
-  });
-  } else {
-    announcementsContainer.innerHTML = '<p>Nu ai anunțuri publicate.</p>';
-  }
+          announcementsContainer.appendChild(card);
+        });
+      } else {
+        announcementsContainer.innerHTML = '<p>Nu ai anunțuri publicate.</p>';
+      }
 
-  } catch (error) {
-    console.error('Eroare la preluarea datelor:', error);
-  }
-  }
-
-    document.addEventListener("DOMContentLoaded", fetchUserData);
-  // Funcția pentru deschiderea modalului
-  function openChooseModal() {
-    document.getElementById("chooseModal").style.display = "flex";
-  }
-
-  // Funcția pentru închiderea modalului
-  document.getElementById("closeModalButton").addEventListener("click", function() {
-    document.getElementById("chooseModal").style.display = "none";
-  });
-
-  // Funcția pentru trimiterea email-ului
-  document.getElementById("submitEmailButton").addEventListener("click", function() {
-    const email = document.getElementById("userEmail").value;
-    if (email) {
-      alert("Email-ul a fost trimis pentru rezervare: " + email);
-      document.getElementById("chooseModal").style.display = "none";
-    } else {
-      alert("Te rog să introduci un email valid.");
+    } catch (error) {
+      console.error('Eroare la preluarea datelor:', error);
     }
-  });
+  }
 
-</script>
-
+  document.addEventListener("DOMContentLoaded", fetchUserData);
 </script>
 
 </body>
