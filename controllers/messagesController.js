@@ -130,4 +130,66 @@ router.get('/conversationsUsers', async (req, res) =>    {
     }
 });
 
+router.post('/create/conversation', async (req, res) => {
+    const { senderEmail, receiverEmail } = req.body;
+    console.log(senderEmail);
+    console.log(receiverEmail);
+    try {
+        const { senderEmail, receiverEmail } = req.body;
+
+        console.log("➡️ Cerere creare conversație");
+        console.log("SenderEmail:", senderEmail);
+        console.log("ReceiverEmail:", receiverEmail);
+
+        // ✅ Verificări de bază
+        if (!senderEmail || !receiverEmail) {
+            return res.status(400).json({
+                message: 'Lipsește senderEmail sau receiverEmail!'
+            });
+        }
+
+        // ✅ Verificăm dacă există deja conversația (opțional)
+        const existingConversation = await db.collection('conversations').findOne({
+            $or: [
+                { senderEmail: senderEmail, receiverEmail: receiverEmail },
+                { senderEmail: receiverEmail, receiverEmail: senderEmail }
+            ]
+        });
+
+        if (existingConversation) {
+            return res.status(409).json({
+                message: 'Conversația există deja!',
+                conversationId: existingConversation._id
+            });
+        }
+
+        // ✅ Construim conversația nouă
+        const newConversation = {
+            senderEmail: senderEmail,
+            receiverEmail: receiverEmail,
+            createdAt: new Date()
+        };
+        console.log(newConversation);
+        const result = await db.collection('conversations').insertOne(newConversation);
+
+        if (result.acknowledged) {
+            console.log("✅ Conversație creată cu succes:", result.insertedId);
+            return res.status(201).json({
+                message: 'Conversație creată cu succes!',
+                conversationId: result.insertedId
+            });
+        } else {
+            return res.status(500).json({
+                message: 'Eroare la crearea conversației!'
+            });
+        }
+
+    } catch (error) {
+        console.error('❌ Eroare la crearea conversației:', error);
+        res.status(500).json({
+            message: 'Eroare internă pe server!'
+        });
+    }
+});
+
 module.exports = router;

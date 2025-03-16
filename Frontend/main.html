@@ -168,14 +168,19 @@
         <p><strong>Oraș:</strong> ${ad.location.city}</p>
     `;
 
-                    // ✅ Fă-l clicabil
-                    card.style.cursor = "pointer"; // cursorul de mână
+                    card.style.cursor = "pointer";
+
                     card.addEventListener("click", () => {
-                        window.location.href = `announceView.html?id=${ad._id}`;
+                        // Salvează anunțul în sessionStorage
+                        sessionStorage.setItem("selectedAnnounce", JSON.stringify(ad));
+
+                        // Trimite-l către pagina de view
+                        window.location.href = "announceView.html";
                     });
 
                     announcementsContainer.appendChild(card);
                 });
+
 
 
             } catch (error) {

@@ -122,6 +122,11 @@
 
     #messageButton {
       right: 20px;
+      bottom: 90px
+    }
+    #favoriteButton {
+      right: 20px;
+      bottom: 20px; /* sub messageButton */
     }
   </style>
 </head>
@@ -159,11 +164,16 @@
 <!-- Buton Trimite Mesaj -->
 <button class="round-button" id="messageButton">
   <i class="material-icons">send</i>
+
 </button>
-
+<button class="round-button" id="favoriteButton">
+  <i class="material-icons">favorite</i>
+</button>
 <script>
-  let sellerId = null; // variabila globala pt utilizatorul care a postat anunțul
+  let sellerEmail = null; // email-ul celui care a postat anunțul
+  let buyerEmail = null;  // email-ul utilizatorului logat
 
+  // Navigații generale
   document.getElementById("backButton").addEventListener("click", function() {
     window.location.href = "main.html";
   });
@@ -188,68 +198,133 @@
     window.location.href = "conversations.html";
   });
 
+  // ✅ Buton "Trimite mesaj"
   document.getElementById("messageButton").addEventListener("click", async function() {
-    if (!sellerId) {
-      alert("Nu am găsit utilizatorul vânzător!");
+    console.log("➡️ Buyer email (sender):", buyerEmail);
+    console.log("➡️ Seller email (receiver):", sellerEmail);
+
+    if (!sellerEmail || !buyerEmail) {
+      alert("Lipsesc datele utilizatorului! Asigură-te că ești logat și că anunțul este corect!");
       return;
     }
 
+    // 🔥 Verificăm dacă utilizatorul încearcă să trimită mesaj către propriul anunț
+    if (buyerEmail === sellerEmail) {
+      alert("Acesta este anunțul tău! Mergi la conversațiile tale.");
+      window.location.href = "conversations.html";
+      return; // Oprire aici, fără apel la backend
+    }
+
+    // ✅ Dacă NU e al lui, creează conversația ca înainte
     try {
-      const response = await fetch("http://localhost:5000/api/conversations", {
+      const response = await fetch("http://localhost:5000/messages/create/conversation", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          receiverId: sellerId
+          senderEmail: buyerEmail,
+          receiverEmail: sellerEmail
         })
       });
 
       const data = await response.json();
+      console.log(data);
 
       if (response.ok) {
-        const conversationId = data.conversationId || data._id;
-        window.location.href = `chat.html?conversationId=${conversationId}`;
+        console.log("✅ Conversație creată:", data);
+
+        // Redirecționezi către chat-ul cu vânzătorul (receiver)
+        window.location.href = `conversations.html?user=${encodeURIComponent(sellerEmail)}`;
       } else {
         alert("Nu am putut crea conversația: " + data.message);
       }
 
     } catch (error) {
-      console.error("Eroare la crearea conversației:", error);
+      console.error("❌ Eroare la crearea conversației:", error);
       alert("A apărut o eroare la crearea conversației!");
     }
   });
+  document.getElementById("favoriteButton").addEventListener("click", async function() {
+    console.log("➡️ Buyer email (user logat):", buyerEmail);
+    console.log("➡️ Anunț (nume):", document.getElementById("title").innerText);
 
-  async function loadAnunt() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const id = urlParams.get("id");
-
-    if (!id) {
-      alert("ID-ul anunțului nu este specificat!");
+    if (!buyerEmail) {
+      alert("Nu ești logat! Te rugăm să te autentifici pentru a adăuga favorite.");
       return;
     }
 
+    const announceName = document.getElementById("title").innerText;
+
     try {
-      const response = await fetch(`http://localhost:5000/announces/announcements/${id}`);
-      const anunt = await response.json();
+      const response = await fetch("http://localhost:5000/announces/addFavorite", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          email: buyerEmail,    // utilizatorul curent logat
+          name: announceName    // numele anunțului afișat
+        })
+      });
 
-      document.getElementById("title").innerText = anunt.name;
-      document.getElementById("image").src = anunt.photos && anunt.photos.length > 0
-              ? anunt.photos[0].data
-              : "https://via.placeholder.com/400x300?text=Fără+Poză";
+      const data = await response.json();
+      console.log(data);
 
-      document.getElementById("description").innerText = anunt.description;
-      document.getElementById("price").innerText = anunt.price;
-      document.getElementById("city").innerText = anunt.location.city;
-
-      sellerId = anunt.sellerId || anunt.userId || null;
+      if (response.ok) {
+        alert(data.message || "Anunț adăugat la favorite!");
+      } else {
+        alert(data.message || "Nu am putut adăuga anunțul la favorite!");
+      }
 
     } catch (error) {
-      console.error("Eroare la încărcarea anunțului:", error);
+      console.error("❌ Eroare la adăugarea în favorite:", error);
+      alert("A apărut o eroare la adăugarea în favorite!");
     }
+  });
+  // ✅ Încarcă anunțul și extrage seller și buyer
+  function loadAnunt() {
+    const storedAnnounce = sessionStorage.getItem("selectedAnnounce");
+    console.log("➡️ Anunțul primit:", storedAnnounce);
+
+    if (!storedAnnounce) {
+      alert("Nu s-a găsit anunțul selectat!");
+      window.location.href = "main.html";
+      return;
+    }
+
+    const anunt = JSON.parse(storedAnnounce);
+
+    document.getElementById("title").innerText = anunt.name;
+
+    document.getElementById("image").src = anunt.photoPath
+            ? anunt.photoPath
+            : "https://via.placeholder.com/400x300?text=Fără+Poză";
+
+    document.getElementById("description").innerText = anunt.description;
+    document.getElementById("price").innerText = anunt.price;
+    document.getElementById("city").innerText = anunt.location.city;
+
+    // ✅ Seller email preluat din anunț
+    sellerEmail = anunt.userEmail || null;
+
+    if (!sellerEmail) {
+      console.warn("⚠️ Nu am găsit userEmail în anunț!");
+    }
+
+    // ✅ Buyer email preluat din localStorage (presupunând că userul e logat)
+    buyerEmail = localStorage.getItem("email");
+
+    if (!buyerEmail) {
+      console.warn("⚠️ Nu am găsit buyer (user logat) în localStorage!");
+    }
+
+    console.log("✅ Seller email:", sellerEmail);
+    console.log("✅ Buyer email:", buyerEmail);
   }
 
   document.addEventListener("DOMContentLoaded", loadAnunt);
+
 </script>
 
 </body>

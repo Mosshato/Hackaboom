@@ -1,63 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-  <title>Cont</title>
+  <title>Contul Meu</title>
   <style>
-    /* Stilul CSS rămâne același */
     body {
       background-color: #f8f9fa;
       font-family: 'Arial', sans-serif;
       margin: 0;
     }
 
-    .container {
-      height: auto;  /* Permite ca containerul să se ajusteze la conținut */
-      display: flex;
-      flex-direction: column;  /* Asigură că secțiunile sunt plasate vertical */
-      justify-content: flex-start;  /* Plasează conținutul la începutul containerului */
-      align-items: center;
-      text-align: center;
-      margin: 0;  /* Elimină marginea automată */
-      padding-top: 100px;
-    }
-
-    .myprofile-container {
-      background: #ffffff;
-      padding: 30px;
-      border-radius: 15px;
-      box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
-      width: 100%;
-      max-width: 400px;
-      margin-bottom: 20px;  /* Adaugă un mic spațiu între profil și anunțuri */
-    }
-
-    .announcements-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;  /* Folosește 2 coloane pentru anunțuri */
-      gap: 20px;  /* Adaugă spațiu între carduri */
-      width: 100%;
-      padding: 20px;
-      box-sizing: border-box; /* Asigură că padding-ul nu afectează dimensiunea totală */
-    }
-
-
-    h4 {
-      margin-bottom: 15px;
-      font-weight: bold;
-      text-align: left; /* Asigură-te că fiecare h4 este aliniat la stânga */
-      margin-left: 10px; /* Adaugă un mic spațiu pentru aspect mai bun */
-    }
-
-    h1 {
-      color: black;
-      font-size: 2rem; /* Larger font for better readability */
-      margin-bottom: 30px;
-      word-wrap: break-word;
-      font-weight: bold;
-    }
     .navbar {
       display: flex;
       justify-content: space-between;
@@ -65,6 +19,11 @@
       padding: 10px 20px;
       background-color: #252424;
       box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+      position: fixed;
+      width: 100%;
+      top: 0;
+      left: 0;
+      z-index: 1000;
     }
 
     .logo {
@@ -88,7 +47,7 @@
     .buttons button {
       display: flex;
       align-items: center;
-      gap: 5px;  /* Spațiu între iconiță și text */
+      gap: 5px;
       padding: 8px 12px;
       border: none;
       background-color: #605c5c;
@@ -99,36 +58,103 @@
       transition: background 0.3s;
     }
 
-    .delete-btn {
-      bottom: 20px; /* Poziționează butonul la 20px de jos */
-      width: 70px;
-      height: 30px;
-      border-radius: 10%;
-      background-color: #605c5c;
-      color: white;
-      border: none;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
-      cursor: pointer;
-      transition: background-color 0.3s ease-in-out;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-    }
-
-
     .buttons button:hover {
       background-color: black;
     }
 
-    .material-icons {
-      font-size: 20px;  /* Ajustează dimensiunea iconiței */
+    .container {
+      width: 90%;
+      margin: 120px auto 20px;
     }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    /* ✅ Profilul user-ului într-un chenar alb */
+    .profile-card {
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      margin-bottom: 40px;
+      text-align: center;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .profile-card p {
+      font-size: 18px;
+      margin: 10px 0;
+      color: #333;
+    }
+
+    /* ✅ Grilă pătrată pentru anunțuri */
+    .announcements-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 20px;
+      justify-items: center;
+    }
+
+    .announcement-card {
+      background: white;
+      width: 100%;
+      max-width: 250px; /* fixăm lățimea */
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      transition: transform 0.3s ease-in-out;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 400px; /* pătrat-ish */
+    }
+
+    .announcement-card:hover {
+      transform: scale(1.05);
+    }
+
+    .announcement-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 10px 10px 0 0;
+    }
+
+    .announcement-card h3 {
+      font-size: 18px;
+      margin: 10px 0;
+      color: #333;
+    }
+
+    .announcement-card p {
+      font-size: 14px;
+      color: #555;
+      margin: 5px 0;
+    }
+
+    .delete-btn {
+      margin: 10px;
+      padding: 8px 12px;
+      background-color: #d9534f;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .delete-btn:hover {
+      background-color: #c9302c;
+    }
+
     .round-button {
-      position: fixed; /* Fixează butonul pe ecran */
-      bottom: 20px; /* Poziționează butonul la 20px de jos */
-      left: 20px; /* Poziționează butonul la 20px de stânga */
-      z-index: 1000; /* Asigură-te că butonul este deasupra altor elemente */
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
       width: 50px;
       height: 50px;
       border-radius: 50%;
@@ -140,15 +166,18 @@
       justify-content: center;
       font-size: 18px;
       cursor: pointer;
-      transition: background-color 0.3s ease-in-out;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+      transition: background-color 0.3s;
+      z-index: 1000;
     }
-    .round-button:active {
+
+    .round-button:hover {
       background-color: black;
     }
   </style>
 </head>
 <body>
+
 <div class="navbar">
   <div class="logo">JustInTime</div>
 
@@ -157,99 +186,164 @@
   </div>
 
   <div class="buttons">
-    <button><i class="material-icons">favorite</i> Favorite</button>
-    <button><i class="material-icons">chat_bubble</i> Mesaje</button>
+    <button id="favButton"><i class="material-icons">favorite</i> Favorite</button>
+    <button id="messButton"><i class="material-icons">chat_bubble</i> Mesaje</button>
     <button id="mapButton"><i class="material-icons">pin_drop</i> Harta</button>
-    <button><i class="material-icons">library_add</i> Adaugă Anunț</button>
-    <button><i class="material-icons">person</i> Cont</button>
+    <button id="addButton"><i class="material-icons">library_add</i> Adaugă Anunț</button>
+    <button id="contButton"><i class="material-icons">person</i> Cont</button>
   </div>
 </div>
-<div class="container">
-  <div class="myprofile-container">
-    <h1>Contul meu</h1>
 
-    <h4 id="username">Nume utilizator:</h4>
-    <h4 id="email">Email:</h4>
-    <h4 id="hours">Ore adunate:</h4>
-    <h4 id="location">Locatie:</h4>
-  </div>
-</div>
 <div class="container">
-  <h2>Anunțuri publicate</h2>
+  <h2>Contul Meu</h2>
+
+  <!-- ✅ Card alb pentru profil -->
+  <div class="profile-card">
+    <p id="name">Numele Utilizatorului</p>
+    <p id="email">Email: utilizator@example.com</p>
+    <p id="hours">Ore adunate: 0</p>
+    <p id="location">Locație: N/A</p>
+  </div>
+
+  <h2>Anunțurile Mele</h2>
+
+  <!-- ✅ Grilă de anunțuri -->
   <div id="announcements" class="announcements-grid"></div>
 </div>
-<div class="wrapper">
-  <div id="map"></div>
-  <button class="round-button" id="backButton">
-    <i class="material-icons">arrow_back_ios</i>
-  </button>
-</div>
-<script>
-  // Funcție pentru a prelua datele utilizatorului de la API
-  async function fetchUserData() {
-    const email = localStorage.getItem('email'); // Luăm email-ul din localStorage
-    console.log(email);
-    if (!email) {
-      console.error('Email-ul nu a fost găsit în localStorage!');
-      return;
-    }
 
-    try {
-      const response = await fetch(`http://localhost:5000/user/myAccount?email=${encodeURIComponent(email)}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      });
+<button class="round-button" id="backButton">
+  <i class="material-icons">arrow_back_ios</i>
+</button>
 
-      const data = await response.json();
-      console.log(data);
-      if (!response.ok) {
-        console.error('Eroare la preluarea datelor:', data.message);
-        return;
-      }
-
-      // ✅ Atribuie valorile datelor din API la elementele HTML
-      document.getElementById('username').innerText = 'Nume utilizator: ' + data.username;
-      document.getElementById('email').innerText = 'Email: ' + data.email;
-      document.getElementById('hours').innerText = 'Ore adunate: ' + data.oreAdunate;
-      document.getElementById('location').innerText = 'Locație: ' + data.locatie;
-
-      const announcementsContainer = document.getElementById('announcements');
-      announcementsContainer.innerHTML = ''; // Curățăm orice conținut anterior
-
-      if (data.announcements && data.announcements.length > 0) {
-        data.announcements.forEach(ad => {
-          const card = document.createElement('div');
-          card.classList.add('announcement-card');
-
-          // Fiecare anunț va afișa numele, descrierea și prețul
-          card.innerHTML = `
-          <h3>${ad.name}</h3>
-          <p>${ad.description}</p>
-          <p>Pret: ${ad.price} ore</p>
-          <button class="delete-btn" data-id="${ad._id}">Șterge</button>
-        `;
-
-          announcementsContainer.appendChild(card);
-        });
-      } else {
-        announcementsContainer.innerHTML = '<p>Nu ai anunțuri publicate.</p>';
-      }
-
-    } catch (error) {
-      console.error('Eroare la preluarea datelor:', error);
-    }
-  }
-
-
-  // Apelează funcția pentru a prelua datele atunci când pagina este încărcată
-  window.onload = fetchUserData;
-</script>
 <script>
   document.getElementById("backButton").addEventListener("click", function() {
     window.location.href = "main.html";
   });
+
+  document.getElementById("favButton").addEventListener("click", function() {
+    window.location.href = "favorite.html";
+  });
+
+  document.getElementById("messButton").addEventListener("click", function() {
+    window.location.href = "conversations.html";
+  });
+
+  document.getElementById("mapButton").addEventListener("click", function() {
+    window.location.href = "map.html";
+  });
+
+  document.getElementById("addButton").addEventListener("click", function() {
+    window.location.href = "addAnnounce.html";
+  });
+
+  document.getElementById("contButton").addEventListener("click", function() {
+    window.location.href = "myAccount.html";
+  });
+
+    // 1️⃣ DELETE FUNCTION GOES HERE
+    async function deleteAnnouncement(announcementId, cardElement) {
+    if (!announcementId) {
+    alert("ID-ul anunțului lipsește!");
+    return;
+  }
+
+    const confirmDelete = confirm("Ești sigur că vrei să ștergi acest anunț?");
+    if (!confirmDelete) {
+    return;
+  }
+
+    try {
+    const response = await fetch('http://localhost:5000/announces/delete', {
+    method: 'DELETE',
+    headers: {
+    'Content-Type': 'application/json'
+  },
+    body: JSON.stringify({ announcementId: announcementId })
+  });
+
+    const data = await response.json();
+    console.log(data);
+
+    if (response.ok) {
+    alert(data.message || "Anunț șters cu succes!");
+    cardElement.remove();
+  } else {
+    alert(data.message || "Nu am putut șterge anunțul!");
+  }
+
+  } catch (error) {
+    console.error("❌ Eroare la ștergere:", error);
+    alert("A apărut o eroare la ștergere!");
+  }
+  }
+
+    // 2️⃣ USER DATA FETCH FUNCTION (MODIFIED WITH DELETE BUTTON)
+    async function fetchUserData() {
+    const email = localStorage.getItem('email');
+    if (!email) {
+    console.error('Email-ul nu a fost găsit în localStorage!');
+    return;
+  }
+
+    try {
+    const response = await fetch(`http://localhost:5000/user/myAccount?email=${encodeURIComponent(email)}`, {
+    method: 'GET',
+    headers: {
+    'Content-Type': 'application/json'
+  }
+  });
+
+    const data = await response.json();
+    if (!response.ok) {
+    console.error('Eroare la preluarea datelor:', data.message);
+    return;
+  }
+
+    document.getElementById('name').innerText = data.username;
+    document.getElementById('email').innerText = 'Email: ' + data.email;
+    document.getElementById('hours').innerText = 'Ore adunate: ' + data.oreAdunate;
+    document.getElementById('location').innerText = 'Locație: ' + data.locatie;
+
+    const announcementsContainer = document.getElementById('announcements');
+    announcementsContainer.innerHTML = '';
+
+    if (data.announcements && data.announcements.length > 0) {
+    data.announcements.forEach(ad => {
+    const card = document.createElement("div");
+    card.classList.add("announcement-card");
+
+    const imageSrc = ad.photoPath
+    ? ad.photoPath
+    : "https://via.placeholder.com/300x180?text=Fără+Poză";
+
+    card.innerHTML = `
+            <img src="${imageSrc}" alt="${ad.name}">
+            <h3>${ad.name}</h3>
+            <p>${ad.description}</p>
+            <p><strong>Preț:</strong> ${ad.price} ore</p>
+            <button class="delete-btn" data-id="${ad._id}">Șterge</button>
+          `;
+
+    const deleteButton = card.querySelector('.delete-btn');
+    deleteButton.addEventListener('click', () => {
+    deleteAnnouncement(ad._id, card);
+  });
+
+    announcementsContainer.appendChild(card);
+  });
+  } else {
+    announcementsContainer.innerHTML = '<p>Nu ai anunțuri publicate.</p>';
+  }
+
+  } catch (error) {
+    console.error('Eroare la preluarea datelor:', error);
+  }
+  }
+
+    document.addEventListener("DOMContentLoaded", fetchUserData);
 </script>
+
+</script>
+
 </body>
 </html>

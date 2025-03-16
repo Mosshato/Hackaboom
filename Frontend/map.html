@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,20 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-          crossorigin=""/>
-    <title>Main</title>
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <title>Map</title>
     <style>
         * {
             box-sizing: border-box;
         }
+
         body {
+            height: 100vh;
+            margin: 0;
             background-color: #f8f9fa;
             font-family: 'Arial', sans-serif;
-            margin: 0;
-            width: 100vw;
-            height: 100vh;
         }
+
+        /* Navbar fix sus, responsive */
         .navbar {
             display: flex;
             justify-content: space-between;
@@ -27,22 +27,36 @@
             padding: 10px 20px;
             background-color: #252424;
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-            color: white;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            box-sizing: border-box;
         }
+
+        /* Logo */
         .logo {
             font-size: 24px;
             font-weight: bold;
+            color: white;
         }
+
+        /* Bara de căutare */
         .searchbar input {
             padding: 8px;
             border: 1px solid #ccc;
             border-radius: 5px;
-            width: 500px;
+            width: 500px; /* Ajustat pentru a se potrivi cu designul dorit */
         }
+
+        /* Butoane navbar */
         .buttons {
             display: flex;
             gap: 10px;
+            margin-right: 20px;
         }
+
         .buttons button {
             display: flex;
             align-items: center;
@@ -56,26 +70,79 @@
             cursor: pointer;
             transition: background 0.3s;
         }
+
         .buttons button:hover {
             background-color: black;
         }
-        .material-icons {
-            font-size: 20px;
+
+        /* Buton hamburger (pentru mobile) */
+        .menu-toggle {
+            display: none;
+            font-size: 28px;
+            color: white;
+            cursor: pointer;
         }
-        .wrapper {
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .searchbar input {
+                width: 250px; /* Mai mic pe ecrane mici */
+            }
+
+            .buttons {
+                display: none;
+                flex-direction: column;
+                background: #252424;
+                position: absolute;
+                top: 60px;
+                right: 0;
+                width: 250px; /* Mai larg pentru a acomoda butoanele */
+                gap: 10px; /* Spațiu mai mare între butoane */
+                padding: 10px; /* Creștem paddingul pentru mai mult spațiu */
+                border-radius: 0 0 10px 10px;
+                box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            }
+
+            .buttons.show {
+                display: flex;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+        }
+
+        /* Container centrat doar pe orizontală și plasat sub navbar */
+        .container {
+            width: 400px;
+            max-width: 100%;
+            background: #ffffff;
+            padding: 50px;
+            border-radius: 15px;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+            margin: auto; /* Centrare orizontală */
+            margin-top: 100px; /* Spațiu sub navbar */
+            text-align: center;
+        }
+
+        .container img {
             width: 100%;
-            height: calc(100% - 50px);
-            position: relative;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 5px;
         }
-        #map {
-            height: 100%;
-            width: 100%;
+
+        .details {
+            font-size: 18px;
+            color: #555;
+            margin-top: 15px;
         }
+
         .round-button {
-            position: absolute;
-            bottom: 20px;
-            left: 20px;
-            z-index: 1000;
+            position: fixed; /* Fixează butonul pe ecran */
+            bottom: 20px; /* Poziționează butonul la 20px de jos */
+            left: 20px; /* Poziționează butonul la 20px de stânga */
+            z-index: 1000; /* Asigură-te că butonul este deasupra altor elemente */
             width: 50px;
             height: 50px;
             border-radius: 50%;
@@ -90,8 +157,18 @@
             transition: background-color 0.3s ease-in-out;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
         }
+
         .round-button:active {
             background-color: black;
+        }
+        .wrapper {
+            width: 100%;
+            height: calc(100% - 50px);
+            position: relative;
+        }
+        #map {
+            height: 100%;
+            width: 100%;
         }
     </style>
 </head>
@@ -101,12 +178,13 @@
     <div class="searchbar">
         <input type="text" placeholder="Căutare...">
     </div>
+    <div class="menu-toggle" onclick="toggleMenu()">☰</div>
     <div class="buttons">
-        <button><i class="material-icons">favorite</i> Favorite</button>
-        <button><i class="material-icons">chat_bubble</i> Mesaje</button>
-        <button><i class="material-icons">pin_drop</i> Harta</button>
-        <button><i class="material-icons">library_add</i> Adaugă Anunț</button>
-        <button><i class="material-icons">person</i> Cont</button>
+        <button id="favButton"><i class="material-icons">favorite</i> Favorite</button>
+        <button id="messButton"><i class="material-icons">chat_bubble</i> Mesaje</button>
+        <button id="mapButton"><i class="material-icons">pin_drop</i> Harta</button>
+        <button id="addButton"><i class="material-icons">library_add</i> Adaugă Anunț</button>
+        <button id="contButton"><i class="material-icons">person</i> Cont</button>
     </div>
 </div>
 <div class="wrapper">
@@ -115,9 +193,9 @@
         <i class="material-icons">arrow_back_ios</i>
     </button>
 </div>
+
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-        crossorigin=""></script>
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script>
     const map = L.map('map').setView([45.7652975, 21.2299043], 13);
 
@@ -129,7 +207,7 @@
     // GET request to your backend API
     async function fetchMapData() {
         try {
-            const response = await fetch('http://localhost:5000/announces/map'); // Asigură-te că endpointul e corect!
+            const response = await fetch('http://localhost:5000/announces/map');
             const data = await response.json();
 
             if (!response.ok) {
@@ -144,25 +222,49 @@
                 const { location } = announcement;
 
                 if (location && location.lat && location.lng) {
-                    // Creează un marker și adaugă-l pe hartă
                     L.marker([location.lat, location.lng]).addTo(map).bindPopup(announcement.description);
-
                 } else {
                     console.warn('❗ Locație lipsă pentru anunț:', announcement);
                 }
             });
-
         } catch (error) {
             console.error('❌ Network or fetch error:', error);
         }
     }
 
-    // Run the function when the map is loaded
     fetchMapData();
-</script>
-<script>
+
+    function toggleMenu() {
+        document.querySelector('.buttons').classList.toggle('show');
+    }
+
     document.getElementById("backButton").addEventListener("click", function() {
         window.location.href = "main.html";
+    });
+</script>
+<script>
+    document.getElementById("mapButton").addEventListener("click", function() {
+        window.location.href = "map.html";
+    });
+</script>
+<script>
+    document.getElementById("contButton").addEventListener("click", function() {
+        window.location.href = "myAccount.html";
+    });
+</script>
+<script>
+    document.getElementById("addButton").addEventListener("click", function() {
+        window.location.href = "addAnnounce.html";
+    });
+</script>
+<script>
+    document.getElementById("favButton").addEventListener("click", function() {
+        window.location.href = "favorite.html";
+    });
+</script>
+<script>
+    document.getElementById("messButton").addEventListener("click", function() {
+        window.location.href = "conversations.html";
     });
 </script>
 </body>

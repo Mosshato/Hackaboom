@@ -140,7 +140,7 @@
 
     <div class="buttons">
         <button id="favButton"><i class="material-icons">favorite</i> Favorite</button>
-        <button><i class="material-icons">chat_bubble</i> Mesaje</button>
+        <button id="messButton"><i class="material-icons">chat_bubble</i> Mesaje</button>
         <button id="mapButton"><i class="material-icons">pin_drop</i> Harta</button>
         <button id="addButton"><i class="material-icons">library_add</i> Adaugă Anunț</button>
         <button id="contButton"><i class="material-icons">person</i> Cont</button>
@@ -156,26 +156,6 @@
         <i class="material-icons">arrow_back_ios</i>
     </button>
 </div>
-<script>
-    document.getElementById("mapButton").addEventListener("click", function() {
-        window.location.href = "map.html";
-    });
-</script>
-<script>
-    document.getElementById("contButton").addEventListener("click", function() {
-        window.location.href = "cont.html";
-    });
-</script>
-<script>
-    document.getElementById("addButton").addEventListener("click", function() {
-        window.location.href = "adaugareAnunt.html";
-    });
-</script>
-<script>
-    document.getElementById("backButton").addEventListener("click", function() {
-        window.location.href = "main.html";
-    });
-</script>
 <!-- Include Font Awesome for icons -->
 <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 <script>
@@ -230,6 +210,34 @@
         } catch (error) {
             console.error("❌ Eroare la fetch:", error);
         }
+    });
+    document.addEventListener("DOMContentLoaded", async () => {
+        // Codul tău existent de fetch favorite...
+
+        // NAVIGATION BUTTONS
+        document.getElementById("favButton").addEventListener("click", function() {
+            window.location.href = "favorite.html";
+        });
+
+        document.getElementById("messButton").addEventListener("click", function() {
+            window.location.href = "conversations.html";
+        });
+
+        document.getElementById("mapButton").addEventListener("click", function() {
+            window.location.href = "map.html";
+        });
+
+        document.getElementById("addButton").addEventListener("click", function() {
+            window.location.href = "addAnnounce.html";
+        });
+
+        document.getElementById("contButton").addEventListener("click", function() {
+            window.location.href = "myAccount.html";
+        });
+
+        document.getElementById("backButton").addEventListener("click", function() {
+            window.location.href = "main.html";
+        });
     });
 </script>
 
