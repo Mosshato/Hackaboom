@@ -6,47 +6,125 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <title>Adaugă Anunț</title>
     <style>
-        /* Stilul CSS rămâne același */
+        /* General styling */
         body {
             background-color: #f8f9fa;
             font-family: 'Arial', sans-serif;
             margin: 0;
         }
 
-        .container {
-            height: auto;
+        /* Navbar */
+        .navbar {
             display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
+            justify-content: space-between;
             align-items: center;
+            padding: 10px 20px;
+            background-color: #252424;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            box-sizing: border-box;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .searchbar input {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 500px;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 10px;
+            margin-right: 20px;
+        }
+
+        .buttons button {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 8px 12px;
+            border: none;
+            background-color: #605c5c;
+            color: white;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .buttons button:hover {
+            background-color: black;
+        }
+
+        .menu-toggle {
+            display: none;
+            font-size: 28px;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .searchbar input {
+                width: 250px;
+            }
+
+            .buttons {
+                display: none;
+                flex-direction: column;
+                background: #252424;
+                position: absolute;
+                top: 60px;
+                right: 0;
+                width: 250px;
+                gap: 10px;
+                padding: 10px;
+                border-radius: 0 0 10px 10px;
+                box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            }
+
+            .buttons.show {
+                display: flex;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+        }
+
+        /* Container for form elements */
+        .container {
+            width: 400px;
+            max-width: 100%;
+            background: #ffffff;
+            padding: 50px;
+            border-radius: 15px;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+            margin: auto;
+            margin-top: 100px;
             text-align: center;
-            margin: 0;
-            padding-top: 100px;
         }
 
         .form-container {
-            background: #ffffff;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 400px;
-            margin-bottom: 20px;
+            max-width: 100%;
         }
 
-        h1 {
+        .container h1 {
             color: black;
             font-size: 2rem;
             margin-bottom: 30px;
             word-wrap: break-word;
             font-weight: bold;
-        }
-
-        h4 {
-            margin-bottom: 15px;
-            font-weight: bold;
-            text-align: left;
-            margin-left: 10px;
         }
 
         .form-group {
@@ -88,56 +166,6 @@
             background-color: black;
         }
 
-        /* Navbar */
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 20px;
-            background-color: #252424;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-            color: white;
-        }
-
-        .searchbar input {
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            width: 500px;
-        }
-
-        .buttons {
-            display: flex;
-            gap: 10px;
-        }
-
-        .buttons button {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            padding: 8px 12px;
-            border: none;
-            background-color: #605c5c;
-            color: white;
-            font-size: 16px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-
-        .buttons button:hover {
-            background-color: black;
-        }
-
-        .material-icons {
-            font-size: 20px;
-        }
-
         .round-button {
             position: fixed;
             bottom: 20px;
@@ -161,9 +189,65 @@
         .round-button:active {
             background-color: black;
         }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .form-container {
+                width: 90%;
+                padding: 20px;
+                margin-top: 20px;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            .container {
+                padding-top: 20px;
+            }
+
+            .round-button {
+                bottom: 10px;
+                left: 10px;
+                width: 45px;
+                height: 45px;
+            }
+
+            .logo {
+                font-size: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar {
+                padding: 10px;
+            }
+
+            .searchbar input {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+
+            .buttons button {
+                font-size: 14px;
+                padding: 6px 10px;
+            }
+
+            .round-button {
+                width: 40px;
+                height: 40px;
+                font-size: 16px;
+            }
+
+            .form-container {
+                width: 90%;
+                padding: 15px;
+            }
+        }
     </style>
 </head>
 <body>
+
 <div class="navbar">
     <div class="logo">JustInTime</div>
 
@@ -172,12 +256,14 @@
     </div>
 
     <div class="buttons">
-        <button><i class="material-icons">favorite</i> Favorite</button>
-        <button><i class="material-icons">chat_bubble</i> Mesaje</button>
+        <button id="favButton"><i class="material-icons">favorite</i> Favorite</button>
+        <button id="messButton"><i class="material-icons">chat_bubble</i> Mesaje</button>
         <button id="mapButton"><i class="material-icons">pin_drop</i> Harta</button>
-        <button><i class="material-icons">library_add</i> Adaugă Anunț</button>
-        <button><i class="material-icons">person</i> Cont</button>
+        <button id="addButton"><i class="material-icons">library_add</i> Adaugă Anunț</button>
+        <button id="contButton"><i class="material-icons">person</i> Cont</button>
     </div>
+
+    <div class="menu-toggle" onclick="toggleMenu()">&#9776;</div>
 </div>
 
 <div class="container">
@@ -213,15 +299,21 @@
         </form>
     </div>
 </div>
+
 <div class="wrapper">
     <div id="adaugareAnunt"></div>
-    <button class="round-button" id="addButton">
+    <button class="round-button" id="backButton">
         <i class="material-icons">arrow_back_ios</i>
     </button>
 </div>
+
 <script>
-</script>
-<script>
+    // Funcția pentru a comuta meniul pe mobil
+    function toggleMenu() {
+        const buttons = document.querySelector('.buttons');
+        buttons.classList.toggle('show');
+    }
+
     document.getElementById('addAnnouncementForm').addEventListener('submit', async (e) => {
         e.preventDefault();
 
@@ -230,7 +322,7 @@
         const locationText = document.getElementById('location').value;
         const price = document.getElementById('price').value;
         const userEmail = localStorage.getItem('email');
-        console.log(name);
+
         if (!userEmail) {
             alert('❌ Nu ești logat! Loghează-te mai întâi.');
             return;
@@ -249,47 +341,75 @@
                 alert('⚠️ Trebuie să adaugi o fotografie!');
                 return;
             }
-            console.log(name);
+
+            const photoUrl = URL.createObjectURL(photoFile);
             const formData = new FormData();
             formData.append('name', name);
             formData.append('description', description);
+            formData.append('location', locationText);
             formData.append('price', price);
-            formData.append('userEmail', userEmail);
-            formData.append('location', JSON.stringify([locationText, lat, lng]));
-            formData.append('photo', photoFile); // trimitem fișierul efectiv
-            console.log(name)
-            for (let pair of formData.entries()) {
-                console.log(`${pair[0]}:`, pair[1]);
-            }
+            formData.append('latitude', lat);
+            formData.append('longitude', lng);
+            formData.append('email', userEmail);
+            formData.append('photo', photoFile);
+
+            // 👨‍💻 Trimitem datele
             try {
-                const response = await fetch('http://localhost:5000/announces/create', {
+                const response = await fetch('http://localhost/api/addAnnouncement', {
                     method: 'POST',
                     body: formData
                 });
 
-                const data = await response.json();
-
                 if (response.ok) {
-                    alert('✅ Anunț adăugat cu succes!');
-                    console.log('✔️ Anunț creat:', data);
-                    window.location.href = "main.html"; // redirect după succes
+                    alert('✅ Anunțul a fost adăugat cu succes!');
+                    document.getElementById('addAnnouncementForm').reset();
                 } else {
-                    alert('❌ Eroare: ' + data.message);
+                    alert('❌ Eroare la trimiterea anunțului!');
                 }
-
             } catch (error) {
-                console.error('❌ Eroare la trimiterea anunțului:', error);
-                alert('❌ Eroare la conexiune cu serverul!');
+                console.error('Error:', error);
+                alert('❌ A apărut o eroare!');
             }
-
-        }, (error) => {
-            console.error('❌ Nu am putut obține locația:', error);
-            alert('❌ Permite accesul la locație!');
         });
     });
-    document.getElementById("addButton").addEventListener("click", function() {
-        window.location.href = "main.html";
+</script>
+
+<script>
+    document.getElementById("mapButton").addEventListener("click", function() {
+        window.location.href = "map.html";
     });
 </script>
+
+<script>
+    document.getElementById("contButton").addEventListener("click", function() {
+        window.location.href = "myAccount.html";
+    });
+</script>
+
+<script>
+    document.getElementById("addButton").addEventListener("click", function() {
+        window.location.href = "addAnnounce.html";
+    });
+</script>
+
+<script>
+    document.getElementById("favButton").addEventListener("click", function() {
+        window.location.href = "favorite.html";
+    });
+</script>
+
+<script>
+    document.getElementById("messButton").addEventListener("click", function() {
+        window.location.href = "conversations.html";
+    });
+</script>
+
+<script>
+    // Butonul de back
+    document.getElementById("backButton").addEventListener("click", function() {
+        window.location.href = "main.html"; // Pagina principală
+    });
+</script>
+
 </body>
 </html>
