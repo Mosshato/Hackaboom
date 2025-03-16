@@ -1,158 +1,169 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-        <title>Main</title>
-        <style>
-            body {
-                background-color: #f8f9fa;
-                font-family: 'Arial', sans-serif;
-                margin: 0;
-            }
-            .navbar {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                padding: 10px 20px;
-                background-color: #252424;
-                box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-            }
-
-            .logo {
-                font-size: 24px;
-                font-weight: bold;
-                color: white;
-            }
-
-            .searchbar input {
-                padding: 8px;
-                border: 1px solid #ccc;
-                border-radius: 5px;
-                width: 500px;
-            }
-
-            .buttons {
-                display: flex;
-                gap: 10px;
-            }
-
-            .buttons button {
-                display: flex;
-                align-items: center;
-                gap: 5px;  /* Spațiu între iconiță și text */
-                padding: 8px 12px;
-                border: none;
-                background-color: #605c5c;
-                color: white;
-                font-size: 16px;
-                border-radius: 5px;
-                cursor: pointer;
-                transition: background 0.3s;
-            }
-
-            .buttons button:hover {
-                background-color: black;
-            }
-
-            .material-icons {
-                font-size: 20px;  /* Ajustează dimensiunea iconiței */
-            }
-            .round-button {
-                position: absolute;
-                bottom: 20px; /* Poziționare față de partea de jos */
-                left: 20px; /* Poziționare față de partea stângă */
-                z-index: 1000; /* Asigură că butonul este peste hartă */
-                width: 50px;
-                height: 50px;
-                border-radius: 50%;
-                background-color: #605c5c;
-                color: white;
-                border: none;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 18px;
-                cursor: pointer;
-                transition: background-color 0.3s ease-in-out;
-                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Adaugă umbră pentru vizibilitate mai bună */
-            }
-
-            .round-button:active {
-                background-color: black;
-            }
-
-
-
-        </style>
-    </head>
-    <body>
-    <div class="navbar">
-        <div class="logo">JustInTime</div>
-
-        <div class="searchbar">
-            <input type="text" placeholder="Căutare...">
-        </div>
-
-        <div class="buttons">
-            <button><i class="material-icons">favorite</i> Favorite</button>
-            <button><i class="material-icons">chat_bubble</i> Mesaje</button>
-            <button><i class="material-icons">pin_drop</i> Harta</button>
-            <button><i class="material-icons">library_add</i> Adaugă Anunț</button>
-            <button><i class="material-icons">person</i> Cont</button>
-        </div>
-    </div>
-    <!-- Include Font Awesome for icons -->
-    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
-    </body>
-    </html>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
           integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
           crossorigin=""/>
-    <!-- Make sure you put this AFTER Leaflet's CSS -->
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-            crossorigin=""></script>
+    <title>Main</title>
     <style>
         * {
             box-sizing: border-box;
         }
         body {
+            background-color: #f8f9fa;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
             width: 100vw;
             height: 100vh;
         }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #252424;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            color: white;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .searchbar input {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 500px;
+        }
+        .buttons {
+            display: flex;
+            gap: 10px;
+        }
+        .buttons button {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 8px 12px;
+            border: none;
+            background-color: #605c5c;
+            color: white;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .buttons button:hover {
+            background-color: black;
+        }
+        .material-icons {
+            font-size: 20px;
+        }
         .wrapper {
             width: 100%;
-            height: 100%;
+            height: calc(100% - 50px);
+            position: relative;
         }
-        #map { height: 100%; width: 100%; }
-
+        #map {
+            height: 100%;
+            width: 100%;
+        }
+        .round-button {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            z-index: 1000;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #605c5c;
+            color: white;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+        .round-button:active {
+            background-color: black;
+        }
     </style>
-
-    <div class="wrapper">
-        <div id="map"></div>
-        <button class="round-button"  id="backButton"><i class="material-icons">arrow_back_ios</i></button>
+</head>
+<body>
+<div class="navbar">
+    <div class="logo">JustInTime</div>
+    <div class="searchbar">
+        <input type="text" placeholder="Căutare...">
     </div>
+    <div class="buttons">
+        <button><i class="material-icons">favorite</i> Favorite</button>
+        <button><i class="material-icons">chat_bubble</i> Mesaje</button>
+        <button><i class="material-icons">pin_drop</i> Harta</button>
+        <button><i class="material-icons">library_add</i> Adaugă Anunț</button>
+        <button><i class="material-icons">person</i> Cont</button>
+    </div>
+</div>
+<div class="wrapper">
+    <div id="map"></div>
+    <button class="round-button" id="backButton">
+        <i class="material-icons">arrow_back_ios</i>
+    </button>
+</div>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+        crossorigin=""></script>
+<script>
+    const map = L.map('map').setView([45.7652975, 21.2299043], 13);
 
-    <script>
-        var map = L.map('map').setView([45.7652975, 21.2299043], 13);
-        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
-            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-        }).addTo(map);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(map);
 
-        // var marker = L.marker([45.7652975, 21.2299043]).addTo(map);
-        function onMapClick(e) {
-             L.marker([e.latlng.lat, e.latlng.lng]).addTo(map);
-         }
+    // GET request to your backend API
+    async function fetchMapData() {
+        try {
+            const response = await fetch('http://localhost:5000/announces/map'); // Asigură-te că endpointul e corect!
+            const data = await response.json();
 
-        map.on('click', onMapClick);
-    </script>
-    <script>
-        document.getElementById("backButton").addEventListener("click", function() {
-            window.location.href = "main.html";
-        });
-    </script>
+            if (!response.ok) {
+                console.error('❌ Server error:', data.message);
+                return;
+            }
 
-    </body>
+            const announcements = data.announcements;
+            console.log('✅ Received announcements:', announcements);
+
+            announcements.forEach(announcement => {
+                const { location } = announcement;
+
+                if (location && location.lat && location.lng) {
+                    // Creează un marker și adaugă-l pe hartă
+                    L.marker([location.lat, location.lng]).addTo(map).bindPopup(announcement.description);
+
+                } else {
+                    console.warn('❗ Locație lipsă pentru anunț:', announcement);
+                }
+            });
+
+        } catch (error) {
+            console.error('❌ Network or fetch error:', error);
+        }
+    }
+
+    // Run the function when the map is loaded
+    fetchMapData();
+</script>
+<script>
+    document.getElementById("backButton").addEventListener("click", function() {
+        window.location.href = "main.html";
+    });
+</script>
+</body>
+</html>

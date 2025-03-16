@@ -34,6 +34,21 @@ app.get('/map', (req, res) => {
     res.sendFile(path.join(__dirname, 'Frontend', 'map.html'));
 });
 
+app.get('/myAccount', (req, res) => {
+    res.sendFile(path.join(__dirname, 'Frontend', 'myAccount.html'));
+});
+
+app.get('/addAnnounce', (req, res) => {
+    res.sendFile(path.join(__dirname, 'Frontend', 'addAccount.html'));
+});
+
+app.get('/favorite', (req, res) => {
+    res.sendFile(path.join(__dirname, 'Frontend', 'favorite.html'));
+});
+
+app.get('/conversations', (req, res) => {
+    res.sendFile(path.join(__dirname, 'Frontend', 'conversations.html'));
+});
 
 global.loggedInUsers = {}; // a this resets if server restarts (no persistence)
 

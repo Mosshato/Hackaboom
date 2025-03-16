@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <title>Adaugă Anunț</title>
+    <style>
+        /* Stilul CSS rămâne același */
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+        }
+
+        .container {
+            height: auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            text-align: center;
+            margin: 0;
+            padding-top: 100px;
+        }
+
+        .form-container {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: black;
+            font-size: 2rem;
+            margin-bottom: 30px;
+            word-wrap: break-word;
+            font-weight: bold;
+        }
+
+        h4 {
+            margin-bottom: 15px;
+            font-weight: bold;
+            text-align: left;
+            margin-left: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"], textarea, input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        textarea {
+            resize: vertical;
+            height: 150px;
+        }
+
+        button {
+            background-color: #605c5c;
+            color: white;
+            font-size: 16px;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: black;
+        }
+
+        /* Navbar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #252424;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .searchbar input {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 500px;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .buttons button {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 8px 12px;
+            border: none;
+            background-color: #605c5c;
+            color: white;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .buttons button:hover {
+            background-color: black;
+        }
+
+        .material-icons {
+            font-size: 20px;
+        }
+
+        .round-button {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 1000;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #605c5c;
+            color: white;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .round-button:active {
+            background-color: black;
+        }
+    </style>
+</head>
+<body>
+<div class="navbar">
+    <div class="logo">JustInTime</div>
+
+    <div class="searchbar">
+        <input type="text" placeholder="Căutare...">
+    </div>
+
+    <div class="buttons">
+        <button><i class="material-icons">favorite</i> Favorite</button>
+        <button><i class="material-icons">chat_bubble</i> Mesaje</button>
+        <button id="mapButton"><i class="material-icons">pin_drop</i> Harta</button>
+        <button><i class="material-icons">library_add</i> Adaugă Anunț</button>
+        <button><i class="material-icons">person</i> Cont</button>
+    </div>
+</div>
+
+<div class="container">
+    <div class="form-container">
+        <h1>Adaugă un Anunț</h1>
+        <form id="addAnnouncementForm" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="announcementName">Nume Anunț</label>
+                <input type="text" id="announcementName" name="announcementName" placeholder="Ex: Meditații Matematică" required>
+            </div>
+
+            <div class="form-group">
+                <label for="description">Descriere</label>
+                <textarea id="description" name="description" placeholder="Detalii despre anunț..." required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="location">Locație</label>
+                <input type="text" id="location" name="location" placeholder="Ex: Timișoara" required>
+            </div>
+
+            <div class="form-group">
+                <label for="price">Timp alocat</label>
+                <input type="text" id="price" name="price" placeholder="Ex: 2 h" required>
+            </div>
+
+            <div class="form-group">
+                <label for="photos">Fotografii</label>
+                <input type="file" id="photos" name="photos" accept="image/*" multiple>
+            </div>
+
+            <button type="submit">Adaugă Anunț</button>
+        </form>
+    </div>
+</div>
+<div class="wrapper">
+    <div id="adaugareAnunt"></div>
+    <button class="round-button" id="addButton">
+        <i class="material-icons">arrow_back_ios</i>
+    </button>
+</div>
+<script>
+</script>
+<script>
+    document.getElementById('addAnnouncementForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const name = document.getElementById('announcementName').value;
+        const description = document.getElementById('description').value;
+        const locationText = document.getElementById('location').value;
+        const price = document.getElementById('price').value;
+        const userEmail = localStorage.getItem('email');
+        console.log(name);
+        if (!userEmail) {
+            alert('❌ Nu ești logat! Loghează-te mai întâi.');
+            return;
+        }
+
+        // 📍 Obținem locația curentă (lat/lng)
+        navigator.geolocation.getCurrentPosition(async (position) => {
+            const lat = position.coords.latitude;
+            const lng = position.coords.longitude;
+
+            // 🖼️ Foto: doar prima fotografie
+            const photoInput = document.getElementById('photos');
+            const photoFile = photoInput.files[0];
+
+            if (!photoFile) {
+                alert('⚠️ Trebuie să adaugi o fotografie!');
+                return;
+            }
+            console.log(name);
+            const formData = new FormData();
+            formData.append('name', name);
+            formData.append('description', description);
+            formData.append('price', price);
+            formData.append('userEmail', userEmail);
+            formData.append('location', JSON.stringify([locationText, lat, lng]));
+            formData.append('photo', photoFile); // trimitem fișierul efectiv
+            console.log(name)
+            for (let pair of formData.entries()) {
+                console.log(`${pair[0]}:`, pair[1]);
+            }
+            try {
+                const response = await fetch('http://localhost:5000/announces/create', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    alert('✅ Anunț adăugat cu succes!');
+                    console.log('✔️ Anunț creat:', data);
+                    window.location.href = "main.html"; // redirect după succes
+                } else {
+                    alert('❌ Eroare: ' + data.message);
+                }
+
+            } catch (error) {
+                console.error('❌ Eroare la trimiterea anunțului:', error);
+                alert('❌ Eroare la conexiune cu serverul!');
+            }
+
+        }, (error) => {
+            console.error('❌ Nu am putut obține locația:', error);
+            alert('❌ Permite accesul la locație!');
+        });
+    });
+    document.getElementById("addButton").addEventListener("click", function() {
+        window.location.href = "main.html";
+    });
+</script>
+</body>
+</html>

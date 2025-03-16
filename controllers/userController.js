@@ -50,10 +50,10 @@ router.post('/login', async (req, res) => {
 });
 router.post('/signup', async (req, res) => {
     try {
-        const { username, email, password } = req.body;
+        const { username, email, password, location } = req.body;
 
-        if (!email || !password || !username) {
-            return res.status(400).json({ message: 'Email usernmae and password are required.' });
+        if (!email || !password || !username || !location || !location.city || !location.lat || !location.lng) {
+            return res.status(400).json({ message: 'Username, email, password și locația completă (city, lat, lng) sunt obligatorii.' });
         }
 
         const existingUser = await db.collection('users').findOne({ email });
@@ -63,13 +63,25 @@ router.post('/signup', async (req, res) => {
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        const result = await db.collection('users').insertOne({
+        // ✅ Creăm userul cu locație și oreAdunate implicite
+        const newUser = {
+            username,
             email,
-            username: username,
             password: hashedPassword,
+            location: {
+                city: location.city,
+                lat: parseFloat(location.lat),
+                lng: parseFloat(location.lng)
+            },
+            oreAdunate: 2, // 🚀 Setăm implicit 2 ore
             createdAt: new Date()
-        });
+        };
 
+        const result = await db.collection('users').insertOne(newUser);
+        await db.collection('favorites').insertOne({
+            email: email,
+            favorites: []
+        });
         res.status(201).json({ message: 'User registered successfully', userId: result.insertedId });
     } catch (error) {
         console.error('Signup Error:', error);
@@ -92,4 +104,50 @@ router.post('/logout', (req, res) => {
         return res.status(400).json({ message: `User ${email} is not logged in.` });
     }
 });
+
+// GET /myAccount
+router.get('/myAccount', async (req, res) => {
+    try {
+
+        // Preluăm email-ul din query params
+        const { email } = req.query;
+        if (!email) {
+            return res.status(400).json({
+                message: 'Email-ul este obligatoriu!'
+            });
+        }
+        // Caută userul după email
+        const user = await db.collection('users').findOne({ email });
+
+        if (!user) {
+            return res.status(404).json({
+                message: 'Utilizatorul nu a fost găsit!'
+            });
+        }
+
+        // Caută anunțurile publicate de utilizator
+        const announcements = await db.collection('announcements').find({
+            userEmail: email
+        }).toArray();
+
+        // Trimitem informațiile userului + anunțurile
+        res.status(200).json({
+            username: user.username,
+            email: user.email,
+            oreAdunate: user.oreAdunate,
+            locatie: user.location.city, // doar orașul
+            announcements: announcements
+        });
+
+    } catch (error) {
+        console.error('Eroare la preluarea contului:', error);
+        res.status(500).json({
+            message: 'Eroare internă pe server.'
+        });
+    }
+});
+
+
+module.exports = router;
+
 module.exports = router;

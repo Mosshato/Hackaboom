@@ -53,33 +53,77 @@ router.post('/send', async (req, res) => {
     }
 });
 
-// GET /messages/conversation
-router.get('/conversation', async (req, res) => {
+router.get('/chat', async (req, res) => {
     try {
-        const { user1, user2 } = req.query; // email-urile vin ca query params
+        const { senderEmail, receiverEmail } = req.query;
 
-        // Validare: ambele email-uri trebuie să fie prezente
-        if (!user1 || !user2) {
-            return res.status(400).json({
-                message: 'Trebuie să trimiți ambii useri (user1 și user2) ca parametri de query!'
-            });
+        if (!senderEmail || !receiverEmail) {
+            return res.status(400).json({ message: 'Missing senderEmail or receiverEmail!' });
         }
 
-        // Căutăm toate mesajele dintre user1 și user2 (indiferent cine a trimis)
-        const messages = await db.collection('messages').find({
-            $or: [
-                { senderEmail: user1, receiverEmail: user2 },
-                { senderEmail: user2, receiverEmail: user1 }
-            ]
-        }).sort({ createdAt: 1 }).toArray(); // Sortăm după data trimiterii (cronologic)
+        // Căutăm mesajele dintre cei doi useri
+        const messages = await db.collection('messages').find(
+            {
+                $or: [
+                    { senderEmail: senderEmail, receiverEmail: receiverEmail },
+                    { senderEmail: receiverEmail, receiverEmail: senderEmail }
+                ]
+            },
+            {
+                projection: {
+                    senderEmail: 1,
+                    receiverEmail: 1,
+                    message: 1
+                }
+            }
+        )
+            .sort({ createdAt: 1 }) // sortăm cronologic
+            .toArray();
 
-        // Dacă nu există mesaje, trimitem un array gol
         res.status(200).json({
-            conversation: messages
+            message: 'Lista mesajelor dintre utilizatori',
+            conversations: messages
         });
 
     } catch (error) {
-        console.error('❌ Eroare la preluarea conversației:', error);
+        console.error('❌ Eroare la preluarea mesajelor:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
+// GET /messages/conversation
+
+router.get('/conversationsUsers', async (req, res) =>    {
+    try {
+        const { email } = req.query; // <-- nu params, ci query!
+        console.log("Email primit:", email);
+
+        if (!email) {
+            return res.status(400).json({ message: 'Email param is missing!' });
+        }
+
+        // Căutăm conversațiile în care apare acest email ca sender sau receiver
+        const conversations = await db.collection('conversations').find({
+            $or: [
+                { senderEmail: email }
+            ]
+        }).toArray();
+
+        console.log("Conversații găsite:", conversations);
+
+        if (!conversations.length) {
+            return res.status(200).json({
+                message: 'Nu există conversații.',
+                conversations: []
+            });
+        }
+
+        res.status(200).json({
+            message: 'Lista conversațiilor',
+            conversations: conversations
+        });
+
+    } catch (error) {
+        console.error('❌ Eroare la preluarea conversațiilor:', error);
         res.status(500).json({
             message: 'Eroare internă pe server'
         });

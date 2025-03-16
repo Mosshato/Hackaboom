@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <title>Main</title>
+    <title>Anunturi favorite</title>
     <style>
         body {
             background-color: #f8f9fa;
@@ -105,8 +105,29 @@
             font-size: 14px;
             color: #555;
         }
+        .round-button {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 1000;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #605c5c;
+            color: white;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
 
-
+        .round-button:active {
+            background-color: black;
+        }
     </style>
 </head>
 <body>
@@ -118,80 +139,100 @@
     </div>
 
     <div class="buttons">
-        <button><i class="material-icons">favorite</i> Favorite</button>
+        <button id="favButton"><i class="material-icons">favorite</i> Favorite</button>
         <button><i class="material-icons">chat_bubble</i> Mesaje</button>
-        <button><i class="material-icons">pin_drop</i> Harta</button>
-        <button><i class="material-icons">library_add</i> Adaugă Anunț</button>
+        <button id="mapButton"><i class="material-icons">pin_drop</i> Harta</button>
+        <button id="addButton"><i class="material-icons">library_add</i> Adaugă Anunț</button>
         <button id="contButton"><i class="material-icons">person</i> Cont</button>
     </div>
 </div>
 <div class="container">
-    <h2>Anunțuri</h2>
+    <h2>Anunțuri favorite</h2>
     <div id="announcements" class="announcements-grid"></div>
 </div>
-
-
+<div class="wrapper">
+    <div id="anuntFavorite"></div>
+    <button class="round-button" id="backButton">
+        <i class="material-icons">arrow_back_ios</i>
+    </button>
+</div>
+<script>
+    document.getElementById("mapButton").addEventListener("click", function() {
+        window.location.href = "map.html";
+    });
+</script>
+<script>
+    document.getElementById("contButton").addEventListener("click", function() {
+        window.location.href = "cont.html";
+    });
+</script>
+<script>
+    document.getElementById("addButton").addEventListener("click", function() {
+        window.location.href = "adaugareAnunt.html";
+    });
+</script>
+<script>
+    document.getElementById("backButton").addEventListener("click", function() {
+        window.location.href = "main.html";
+    });
+</script>
 <!-- Include Font Awesome for icons -->
 <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", async () => {
         const announcementsContainer = document.getElementById("announcements");
 
-        async function fetchAnnouncements() {
-            try {
-                const response = await fetch("http://localhost:5000/announces/feed");
-                const data = await response.json(); // { message: ..., announcements: [...] }
+        // Obținem email-ul din localStorage
+        const email = localStorage.getItem('email');
 
-                const announcements = data.announcements;
-
-                if (!announcements || announcements.length === 0) {
-                    announcementsContainer.innerHTML = "<p>Nu există anunțuri disponibile!</p>";
-                    return;
-                }
-
-                // Curățăm containerul înainte de afișare
-                announcementsContainer.innerHTML = "";
-
-                announcements.forEach(ad => {
-                    const card = document.createElement("div");
-                    card.classList.add("announcement-card");
-
-                    const image = ad.photos && ad.photos.length > 0
-                        ? ad.photos[0].data
-                        : "https://via.placeholder.com/300x180?text=Fără+Poză";
-
-                    card.innerHTML = `
-        <img src="${image}" alt="${ad.name}">
-        <h3>${ad.name}</h3>
-        <p>${ad.description}</p>
-        <p><strong>Preț:</strong> ${ad.price} lei</p>
-        <p><strong>Oraș:</strong> ${ad.location.city}</p>
-    `;
-
-                    // ✅ Fă-l clicabil
-                    card.style.cursor = "pointer"; // cursorul de mână
-                    card.addEventListener("click", () => {
-                        window.location.href = `announceView.html?id=${ad._id}`;
-                    });
-
-                    announcementsContainer.appendChild(card);
-                });
-
-
-            } catch (error) {
-                console.error("❌ Eroare la preluarea anunțurilor:", error);
-                announcementsContainer.innerHTML = "<p>Eroare la încărcarea anunțurilor.</p>";
-            }
+        if (!email) {
+            console.error('❌ Email-ul nu există în localStorage. Utilizatorul nu este logat!');
+            return;
         }
 
-        fetchAnnouncements();
+        try {
+            const response = await fetch(`http://localhost:5000/announces/favorite?email=${encodeURIComponent(email)}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                console.error("❌ Eroare la încărcarea anunțurilor:", data.message);
+                return;
+            }
+
+            const announcements = data.announcements || [];
+
+            announcementsContainer.innerHTML = ''; // curățăm conținutul vechi
+
+            if (announcements.length === 0) {
+                announcementsContainer.innerHTML = '<p>Nu ai anunțuri favorite.</p>';
+                return;
+            }
+
+            announcements.forEach(ad => {
+                const card = document.createElement("div");
+                card.classList.add("announcement-card");
+
+                card.innerHTML = `
+                    <h3>${ad.name}</h3>
+                    <p>${ad.description}</p>
+                    <p>Pret: ${ad.price} ore</p>
+                `;
+
+                announcementsContainer.appendChild(card);
+            });
+
+        } catch (error) {
+            console.error("❌ Eroare la fetch:", error);
+        }
     });
 </script>
-<script>
-    document.getElementById("contButton").addEventListener("click", function() {
-        window.location.href = "myAccount.html";
-    });
-</script>
+
 
 </body>
 </html>

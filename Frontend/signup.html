@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Înregistrare</title>
   <style>
-    /* Font modern */
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap');
 
     * {
@@ -107,6 +106,7 @@
   </style>
 </head>
 <body>
+
 <div class="register-container">
   <h2>Înregistrare</h2>
   <div id="responseMessage" class="error-message"></div>
@@ -127,6 +127,11 @@
       <label>Confirmare Parolă:</label>
       <input type="password" id="confirmPassword" name="confirm_password" required>
     </div>
+    <div class="input-group">
+      <label>Oraș (Locație):</label>
+      <input type="text" id="city" name="city" required>
+    </div>
+
     <button class="btn" type="submit">Înregistrare</button>
   </form>
   <a href="/login">
@@ -139,52 +144,79 @@
   const responseMessage = document.getElementById('responseMessage');
 
   registerForm.addEventListener('submit', async (e) => {
-    e.preventDefault(); // Prevent the form from submitting traditionally
+    e.preventDefault();
 
-    const username = document.getElementById('username').value;
-    const email = document.getElementById('email').value;
+    const username = document.getElementById('username').value.trim();
+    const email = document.getElementById('email').value.trim();
     const password = document.getElementById('password').value;
     const confirmPassword = document.getElementById('confirmPassword').value;
+    const city = document.getElementById('city').value.trim();
 
-    // Simple password match validation
+    // ✅ Verifică parolele
     if (password !== confirmPassword) {
       responseMessage.textContent = '❌ Parolele nu se potrivesc!';
       responseMessage.classList.add('error-message');
       return;
     }
 
-    try {
-      const response = await fetch('http://localhost:5000/user/signup', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ username, email, password })
-      });
+    // ✅ Folosește navigator.geolocation pentru lat/lng
+    if (!navigator.geolocation) {
+      responseMessage.textContent = '❌ Geolocația nu este suportată pe acest browser!';
+      return;
+    }
 
-      const data = await response.json();
+    navigator.geolocation.getCurrentPosition(async (position) => {
+      const lat = position.coords.latitude;
+      const lng = position.coords.longitude;
 
-      if (response.ok) {
-        responseMessage.textContent = '✅ Înregistrare reușită! Bine ai venit, ' + data.username;
-        responseMessage.classList.remove('error-message');
-        responseMessage.classList.add('success-message');
+      // ✅ Acum trimitem datele complete spre backend
+      const userData = {
+        username,
+        email,
+        password,
+        location: {
+          city,
+          lat,
+          lng
+        }
+      };
 
-        localStorage.setItem('email', email);
-        // Redirect or next step after successful registration
-        window.location.href = "/main.html";
+      try {
+        const response = await fetch('http://localhost:5000/user/signup', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(userData)
+        });
 
-      } else {
-        responseMessage.textContent = '❌ ' + data.message;
-        responseMessage.classList.remove('success-message');
+        const data = await response.json();
+
+        if (response.ok) {
+          responseMessage.textContent = '✅ Înregistrare reușită! Bine ai venit, ' + username;
+          responseMessage.classList.remove('error-message');
+          responseMessage.classList.add('success-message');
+
+          localStorage.setItem('email', email);
+          window.location.href = "/main.html"; // Redirect
+        } else {
+          responseMessage.textContent = '❌ ' + data.message;
+          responseMessage.classList.remove('success-message');
+          responseMessage.classList.add('error-message');
+        }
+
+      } catch (error) {
+        console.error('❌ Eroare de rețea:', error);
+        responseMessage.textContent = '❌ Eroare de rețea sau server indisponibil!';
         responseMessage.classList.add('error-message');
       }
 
-    } catch (error) {
-      console.error('❌ Eroare de rețea:', error);
-      responseMessage.textContent = '❌ Eroare de rețea sau server indisponibil!';
+    }, () => {
+      responseMessage.textContent = '❌ Nu am putut obține locația utilizatorului!';
       responseMessage.classList.add('error-message');
-    }
+    });
   });
 </script>
+
 </body>
 </html>
